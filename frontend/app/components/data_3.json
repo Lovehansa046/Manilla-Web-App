@@ -1,0 +1,37 @@
+[
+  {
+    "payment": "INV-001",
+    "payment_amount": 1500,
+    "payment_date": "2024-10-15",
+    "legal_name": "John Doe",
+    "status": "Paid"
+  },
+  {
+    "payment": "INV-002",
+    "payment_amount": 2500,
+    "payment_date": "2024-10-17",
+    "legal_name": "Jane Smith",
+    "status": "Pending"
+  },
+  {
+    "payment": "INV-003",
+    "payment_amount": 3000,
+    "payment_date": "2024-10-20",
+    "legal_name": "Acme Corp",
+    "status": "Overdue"
+  },
+  {
+    "payment": "INV-004",
+    "payment_amount": 4000,
+    "payment_date": "2024-10-22",
+    "legal_name": "Global Solutions",
+    "status": "Paid"
+  },
+  {
+    "payment": "INV-005",
+    "payment_amount": 2000,
+    "payment_date": "2024-10-25",
+    "legal_name": "Tech Innovators",
+    "status": "Pending"
+  }
+]

@@ -1,0 +1,92 @@
+[
+  {
+    "sku": "A12345",
+    "name": "Wireless Headphones",
+    "price": 59.99,
+    "count": 10,
+    "sellerName": "ElectroHub",
+    "totalPrice": 599.90,
+    "quantity": 10
+  },
+  {
+    "sku": "B23456",
+    "name": "Portable Charger",
+    "price": 24.99,
+    "count": 15,
+    "sellerName": "Tech World",
+    "totalPrice": 374.85,
+    "quantity": 15
+  },
+  {
+    "sku": "C34567",
+    "name": "Smart Watch",
+    "price": 99.99,
+    "count": 8,
+    "sellerName": "Gadget Zone",
+    "totalPrice": 799.92,
+    "quantity": 8
+  },
+  {
+    "sku": "D45678",
+    "name": "Bluetooth Speaker",
+    "price": 45.50,
+    "count": 20,
+    "sellerName": "SoundWave",
+    "totalPrice": 910.00,
+    "quantity": 20
+  },
+  {
+    "sku": "E56789",
+    "name": "Laptop Stand",
+    "price": 29.99,
+    "count": 12,
+    "sellerName": "Home Office",
+    "totalPrice": 359.88,
+    "quantity": 12
+  },
+  {
+    "sku": "F67890",
+    "name": "USB-C Cable",
+    "price": 12.99,
+    "count": 25,
+    "sellerName": "CableMart",
+    "totalPrice": 324.75,
+    "quantity": 25
+  },
+  {
+    "sku": "G78901",
+    "name": "Wireless Mouse",
+    "price": 19.99,
+    "count": 30,
+    "sellerName": "ElectroHub",
+    "totalPrice": 599.70,
+    "quantity": 30
+  },
+  {
+    "sku": "H89012",
+    "name": "Mechanical Keyboard",
+    "price": 79.99,
+    "count": 5,
+    "sellerName": "KeyboardKing",
+    "totalPrice": 399.95,
+    "quantity": 5
+  },
+  {
+    "sku": "I90123",
+    "name": "LED Monitor",
+    "price": 149.99,
+    "count": 7,
+    "sellerName": "DisplayHouse",
+    "totalPrice": 1049.93,
+    "quantity": 7
+  },
+  {
+    "sku": "J01234",
+    "name": "Gaming Chair",
+    "price": 199.99,
+    "count": 3,
+    "sellerName": "FurniturePro",
+    "totalPrice": 599.97,
+    "quantity": 3
+  }
+]
