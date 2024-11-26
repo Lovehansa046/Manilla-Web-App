@@ -137,3 +137,73 @@
         font-size: 16px; /* Еще меньше текст */
     }
 }
+
+
+.main_page {
+    @apply flex justify-center items-center min-h-screen;
+}
+
+.Great-offer {
+    text-align: center;
+    max-width: 900px;
+}
+
+.Great-text-offer {
+    font-size: 1.5rem;
+    margin-bottom: 1.5rem;
+    font-weight: bold;
+}
+
+.cards-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 50px;
+}
+
+.card {
+    width: 250px;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    background-color: #fff;
+}
+
+.card img {
+    width: 100%;
+    height: auto;
+}
+
+.card-body {
+    padding: 1rem;
+    text-align: center;
+}
+
+.card-body h3 {
+    font-size: 1.25rem;
+    margin: 0.5rem 0;
+}
+
+.card-body p {
+    margin: 0.25rem 0;
+    font-size: 1rem;
+    color: #555;
+}
+
+.add-btn {
+    background-color: #f97316;
+    border: none;
+    border-radius: 50%;
+    color: #fff;
+    font-size: 1.25rem;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+}
+
+.add-btn:hover {
+    background-color: #ea580c;
+}
