@@ -283,7 +283,7 @@ export default function Navbar() {
     // Replace javascript:void(0) paths with your paths
     const navigation = [
         {title: "Меню", path: "/marketplace", isDrapdown: true, navs: dropdownNavs},
-        {title: "О нас", path: "/contracts", isDrapdown: false},
+        {title: "О нас", path: "/about", isDrapdown: false},
     ]
 
     useEffect(() => {
@@ -428,9 +428,11 @@ export default function Navbar() {
                                 </button>
                             </li>
                             <li>
-                                <button className="hover:fill-amber-300">
-                                    <img src="/image/add-to-basket.svg" className="w-6"></img>
-                                </button>
+                                <a href="/bucket">
+                                    <button className="hover:fill-amber-300">
+                                        <img src="/image/add-to-basket.svg" className="w-6"></img>
+                                    </button>
+                                </a>
                             </li>
                             <ProfileDropDown
                                 class="block"
