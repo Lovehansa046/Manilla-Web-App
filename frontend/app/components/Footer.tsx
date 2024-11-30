@@ -5,11 +5,11 @@ import React from "react";
 export default function Footer() {
     const footerNavs = [
         {
-            href: 'javascript:void()',
+            href: '/menu',
             name: 'Меню'
         },
         {
-            href: 'javascript:void()',
+            href: '/about',
             name: 'О нас'
         },
         {
@@ -17,7 +17,7 @@ export default function Footer() {
             name: 'Личный кабинет'
         },
         {
-            href: 'javascript:void()',
+            href: '/bucket',
             name: 'Корзина'
         }
     ]

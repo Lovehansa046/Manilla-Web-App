@@ -65,7 +65,7 @@ const dropdownNavs = [
             {
                 title: "Основные блюда",
                 desc: "Duis aute irure dolor in reprehenderit",
-                path: "javascript:void(0)",
+                path: "/menu/main-courses",
                 icon: <svg fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" width="24"
                            height="24">
                     <g id="SVGRepo_bgCarrier" strokeWidth="0"></g>
@@ -80,7 +80,7 @@ const dropdownNavs = [
             {
                 title: "Спецпредложения",
                 desc: "Duis aute irure dolor in reprehenderit",
-                path: "javascript:void(0)",
+                path: "/menu/special-offers",
                 icon: <svg fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" width="24"
                            height="24">
                     <g id="SVGRepo_bgCarrier" strokeWidth="0"></g>
@@ -99,7 +99,7 @@ const dropdownNavs = [
             {
                 title: "Алкогольные напитки",
                 desc: "Duis aute irure dolor in reprehenderit",
-                path: "javascript:void(0)",
+                path: "/menu/alcohol",
                 icon: <svg
                     version="1.1"
                     id="Layer_1"
@@ -159,7 +159,7 @@ const dropdownNavs = [
             {
                 title: "Безалкогольные напитки",
                 desc: "Duis aute irure dolor in reprehenderit",
-                path: "javascript:void(0)",
+                path: "/menu/non-alcohol",
                 icon: <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" fill="currentColor" width="24"
                            height="24">
                     <path
@@ -198,7 +198,7 @@ const dropdownNavs = [
             {
                 title: "Детские позиции",
                 desc: "Duis aute irure dolor in reprehenderit",
-                path: "javascript:void(0)",
+                path: "/menu/kids-menu",
                 icon: <svg
                     fill="currentColor"
                     width="24px" height="24px"
@@ -218,7 +218,7 @@ const dropdownNavs = [
             {
                 title: "десерты",
                 desc: "Duis aute irure dolor in reprehenderit",
-                path: "javascript:void(0)",
+                path: "/menu/dessert",
                 icon: <svg fill="currentColor" width="24px" height="24px" viewBox="0 0 64 64"
                            xmlns="http://www.w3.org/2000/svg">
                     <g data-name="Layer 14" id="Layer_14">
