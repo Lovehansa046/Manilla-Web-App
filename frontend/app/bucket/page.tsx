@@ -42,6 +42,12 @@ export default function Bucket() {
                     <span className="text-lg sm:text-xl font-semibold">Общая сумма:</span>
                     <span className="text-xl sm:text-2xl font-bold">{totalPrice} ₽</span>
                 </div>
+                <div className="mt-6 p-4 rounded-lg flex flex-col sm:flex-row justify-center items-center">
+                    <button
+                        className=" mt-6 sm:mt-0 sm:ml-10 bg-red-500 text-white px-32 py-4 rounded-lg hover:bg-red-600">
+                        Заказать!
+                    </button>
+                </div>
             </div>
             <Footer/>
         </>
