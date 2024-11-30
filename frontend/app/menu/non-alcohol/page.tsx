@@ -2,8 +2,8 @@
 
 import Navbar from "@/app/components/Navbar";
 import Footer from "@/app/components/Footer";
-import ProductGrid from "@/app/components/simple_function_page/ProductPage"
-import sampleProducts from "@/app/components/Data/sampleProducts.json"
+import ProductGrid from "@/app/menu/SIMPLE_FUNCTION_PAGE/ProductPage"
+import sampleProducts from "@/app/components/DATA/sampleProducts.json"
 
 
 
