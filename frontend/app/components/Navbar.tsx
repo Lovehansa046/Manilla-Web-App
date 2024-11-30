@@ -1,7 +1,7 @@
 import React, {useEffect, useRef, useState} from 'react'
-import data from './data_2.json';
-import contracts from './data.json';
-import payments from './data_3.json';
+import data from '@/app/components/Data/data_2.json';
+import contracts from '@/app/components/Data/data.json';
+import payments from '@/app/components/Data/data_3.json';
 
 
 const ProfileDropDown = (props) => {
