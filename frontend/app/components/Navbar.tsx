@@ -11,7 +11,7 @@ const ProfileDropDown = (props) => {
     const navigation = [
         {title: "Dashboard", path: "/account"},
         {title: "Settings", path: "/account/settings/"},
-        {title: "Log out", path: "javascript:void(0)"},
+        {title: "Log out", path: "/logout"},
     ];
 
     useEffect(() => {

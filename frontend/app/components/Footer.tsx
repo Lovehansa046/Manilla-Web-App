@@ -13,7 +13,7 @@ export default function Footer() {
             name: 'О нас'
         },
         {
-            href: 'javascript:void()',
+            href: '/account',
             name: 'Личный кабинет'
         },
         {
