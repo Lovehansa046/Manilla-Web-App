@@ -1,6 +1,30 @@
 // pages/api/product-types/index.js
-import {getConnection} from "../../dbConnection/dbConnection"; // Убедитесь, что путь правильный
+import {getConnection} from "../../dbConnection/dbConnection";
 
+/**
+ * @swagger
+ * /api/product-types:
+ *   post:
+ *     description: Добавить новый тип продукта
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               name:
+ *                 type: string
+ *               description:
+ *                 type: string
+ *     responses:
+ *       201:
+ *         description: Тип продукта успешно создан
+ *       400:
+ *         description: Не указано имя типа продукта
+ *       500:
+ *         description: Ошибка при добавлении типа продукта
+ */
 export default async function handler(req, res) {
     if (req.method === "POST") {
         const {name, description} = req.body;
@@ -20,15 +44,11 @@ export default async function handler(req, res) {
                 VALUES (?, ?)
             `;
 
-            const values = [
-                name,
-                description || null
-            ];
+            const values = [name, description || null];
 
             // Выполняем запрос
             const [result] = await connection.execute(query, values);
 
-            // Отправляем успешный ответ
             return res.status(201).json({message: "Тип продукта успешно создан", productTypeId: result.insertId});
         } catch (error) {
             console.error("Ошибка при добавлении типа продукта:", error);
