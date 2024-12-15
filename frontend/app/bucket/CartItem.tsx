@@ -10,7 +10,7 @@ const CartItem = ({item, onRemove, onUpdateQuantity}) => {
             />
             <div className="flex-1 text-center sm:text-left">
                 <h3 className="text-lg sm:text-xl font-semibold">{item.name}</h3>
-                <p className="text-sm text-gray-500">Цена: {item.price} ₽</p>
+                <p className="text-sm text-gray-500">Цена: {item.price} €</p>
             </div>
             <div className="flex items-center gap-2">
                 <button

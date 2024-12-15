@@ -24,6 +24,26 @@ import {getConnection} from "../../dbConnection/dbConnection";
  *         description: Не указано имя типа продукта
  *       500:
  *         description: Ошибка при добавлении типа продукта
+ *   get:
+ *     description: Получить список всех типов продуктов
+ *     responses:
+ *       200:
+ *         description: Список типов продуктов
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 type: object
+ *                 properties:
+ *                   id:
+ *                     type: integer
+ *                   name:
+ *                     type: string
+ *                   description:
+ *                     type: string
+ *       500:
+ *         description: Ошибка при получении типов продуктов
  */
 export default async function handler(req, res) {
     if (req.method === "POST") {
@@ -43,7 +63,6 @@ export default async function handler(req, res) {
                 INSERT INTO Product_type (name, description)
                 VALUES (?, ?)
             `;
-
             const values = [name, description || null];
 
             // Выполняем запрос
@@ -53,6 +72,20 @@ export default async function handler(req, res) {
         } catch (error) {
             console.error("Ошибка при добавлении типа продукта:", error);
             return res.status(500).json({message: "Ошибка при добавлении типа продукта", error: error.message});
+        }
+    } else if (req.method === "GET") {
+        try {
+            // Подключаемся к базе данных
+            const connection = await getConnection();
+
+            // Запрос для получения всех типов продуктов
+            const query = "SELECT id, name, description FROM Product_type";
+            const [rows] = await connection.execute(query);
+
+            return res.status(200).json(rows);
+        } catch (error) {
+            console.error("Ошибка при получении типов продуктов:", error);
+            return res.status(500).json({message: "Ошибка при получении типов продуктов", error: error.message});
         }
     } else {
         res.status(405).json({message: "Метод не поддерживается"});

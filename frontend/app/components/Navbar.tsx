@@ -293,6 +293,22 @@ export default function Navbar() {
         };
     }, [])
 
+    const [cartItems, setCartItems] = useState([]);
+
+    // Загружаем данные о товарах из localStorage
+    useEffect(() => {
+        const savedCart = JSON.parse(localStorage.getItem("cart"));
+        if (savedCart) {
+            setCartItems(savedCart);
+        }
+    }, []);
+
+    const getTotalItems = () => {
+        return cartItems.reduce((total, item) => total + item.quantity, 0); // Суммируем количество всех товаров в корзине
+    };
+
+    const totalItems = getTotalItems();
+
     return (
         <>
             <nav
@@ -429,8 +445,14 @@ export default function Navbar() {
                             </li>
                             <li>
                                 <a href="/bucket">
-                                    <button className="hover:fill-amber-300">
-                                        <img src="/image/add-to-basket.svg" className="w-6"></img>
+                                    <button className="hover:fill-amber-300 relative">
+                                        <img src="/image/add-to-basket.svg" className="w-6" alt="Add to basket"/>
+                                        {totalItems > 0 && (
+                                            <span
+                                                className="absolute bottom-[-5px] right-[-5px] bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
+                        {totalItems}
+                    </span>
+                                        )}
                                     </button>
                                 </a>
                             </li>
