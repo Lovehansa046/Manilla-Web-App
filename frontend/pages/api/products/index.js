@@ -1,4 +1,5 @@
 // pages/api/products/index.js
+
 import {getConnection} from "../../dbConnection/dbConnection";
 
 /**
@@ -85,6 +86,15 @@ import {getConnection} from "../../dbConnection/dbConnection";
  *       500:
  *         description: Ошибка при получении данных
  */
+
+
+// const ProductSchema = new mongoose.Schema({
+//     name: String,
+//     description: String,
+//     price: String,
+//     image: String,
+// });
+
 export default async function handler(req, res) {
     if (req.method === "POST") {
         const {name, description, price, image, product_type_id, is_alcoholic, quantity_available} = req.body;
@@ -95,30 +105,24 @@ export default async function handler(req, res) {
         }
 
         try {
-            // Подключаемся к базе данных
-            const connection = await getConnection();
+            // Подключаемся к базе данных MongoDB
+            const {db} = await getConnection();
 
-            // Запрос для добавления нового продукта
-            const query = `
-                INSERT INTO Product (name, description, price, image, product_type_id, is_alcoholic, quantity_available)
-                VALUES (?, ?, ?, ?, ?, ?, ?)
-            `;
-
-            const values = [
+            // Добавляем новый продукт в коллекцию 'Product'
+            const product = {
                 name,
-                description || null,
+                description: description || null,
                 price,
-                image || null,
+                image: image || null,
                 product_type_id,
-                is_alcoholic || false,
-                quantity_available || 0
-            ];
+                is_alcoholic: is_alcoholic || false,
+                quantity_available: quantity_available || 0
+            };
 
-            // Выполняем запрос
-            const [result] = await connection.execute(query, values);
+            const result = await db.collection('Product').insertOne(product);
 
             // Отправляем успешный ответ
-            return res.status(201).json({message: "Продукт успешно создан", productId: result.insertId});
+            return res.status(201).json({message: "Продукт успешно создан", productId: result.insertedId});
         } catch (error) {
             console.error("Ошибка при добавлении продукта:", error);
             return res.status(500).json({message: "Ошибка при добавлении продукта", error: error.message});
@@ -127,19 +131,17 @@ export default async function handler(req, res) {
         const {type_product} = req.query;
 
         try {
-            // Подключаемся к базе данных
-            const connection = await getConnection();
+            // Подключаемся к базе данных MongoDB
+            const {db} = await getConnection();
 
-            // Если type_product не передан, используем null или пустое значение
-            const query = type_product
-                ? 'SELECT * FROM Product WHERE product_type_id = ?' // Фильтруем по типу продукта
-                : 'SELECT * FROM Product'; // Если нет фильтра, выбираем все продукты
+            // Если type_product не передан, используем пустой запрос для получения всех продуктов
+            const query = type_product ? {product_type_id: parseInt(type_product)} : {};
 
-            // Если type_product не передан, передаем null в запрос
-            const [rows] = await connection.execute(query, type_product ? [type_product] : []);
+            // Получаем список продуктов, соответствующих фильтру
+            const products = await db.collection('Product').find(query).toArray();
 
             // Отправляем успешный ответ с данными
-            return res.status(200).json({products: rows});
+            return res.status(200).json({products});
         } catch (error) {
             console.error("Ошибка при получении продуктов:", error);
             return res.status(500).json({message: "Ошибка при получении данных", error: error.message});

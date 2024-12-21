@@ -55,34 +55,31 @@ export default async function handler(req, res) {
         }
 
         try {
-            // Подключаемся к базе данных
-            const connection = await getConnection();
+            const {db, client} = await getConnection();  // Получаем db и client
 
             // Запрос для добавления нового типа продукта
-            const query = `
-                INSERT INTO Product_type (name, description)
-                VALUES (?, ?)
-            `;
-            const values = [name, description || null];
+            const productType = {name, description: description || null};
+            const result = await db.collection('Product_type').insertOne(productType);
 
-            // Выполняем запрос
-            const [result] = await connection.execute(query, values);
+            // Закрытие подключения к MongoDB после выполнения запроса
+            await client.close();
 
-            return res.status(201).json({message: "Тип продукта успешно создан", productTypeId: result.insertId});
+            return res.status(201).json({message: 'Тип продукта успешно создан', productTypeId: result.insertedId});
         } catch (error) {
             console.error("Ошибка при добавлении типа продукта:", error);
             return res.status(500).json({message: "Ошибка при добавлении типа продукта", error: error.message});
         }
     } else if (req.method === "GET") {
         try {
-            // Подключаемся к базе данных
-            const connection = await getConnection();
+            const {db, client} = await getConnection();  // Получаем db и client
 
             // Запрос для получения всех типов продуктов
-            const query = "SELECT id, name, description FROM Product_type";
-            const [rows] = await connection.execute(query);
+            const result = await db.collection('Product_type').find().toArray();
 
-            return res.status(200).json(rows);
+            // Закрытие подключения после выполнения запроса
+            await client.close();
+
+            return res.status(200).json(result);
         } catch (error) {
             console.error("Ошибка при получении типов продуктов:", error);
             return res.status(500).json({message: "Ошибка при получении типов продуктов", error: error.message});

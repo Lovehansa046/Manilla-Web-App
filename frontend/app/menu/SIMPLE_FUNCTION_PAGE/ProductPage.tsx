@@ -1,97 +1,74 @@
-import React, {useEffect, useState} from 'react';
+// pages/index.js
+import React, {useState, useEffect} from 'react';
+import axios from 'axios';
 
-const ProductGrid = ({products}) => {
+const Home = ({products}) => {
     const [cart, setCart] = useState([]);
 
-    // Компонент карточки продукта
-    const ProductCard = ({product, addToCart}) => {
-        return (
-            <div className="bg-white shadow-lg rounded-lg p-4">
-                <img
-                    src={product.image}
-                    alt={product.name}
-                    className="w-full h-40 object-cover rounded-lg mb-4"
-                />
-                <h2 className="text-lg font-semibold text-gray-800">{product.name}</h2>
-                <p className="text-sm text-gray-600 mt-2">{product.description}</p>
-                <p className="text-lg font-bold text-gray-900 mt-4">{product.price} €</p>
-                <button
-                    onClick={() => addToCart(product)}
-                    className="mt-4 w-full px-4 py-2 bg-primary text-white rounded-lg hover:bg-primary-dark"
-                >
-                    Добавить в корзину
-                </button>
-            </div>
-        );
-    };
-
-    // Функция для добавления товара в корзину
-    const addToCart = (product) => {
-        setCart((prevCart) => {
-            const productExists = prevCart.find(item => item.id === product.id);
-            if (productExists) {
-                return prevCart.map(item =>
-                    item.id === product.id ? {...item, quantity: item.quantity + 1} : item
-                );
-            }
-            return [...prevCart, {...product, quantity: 1}];
-        });
-
-        window.location.reload(); // Принудительно обновляем страницу после добавления товара в корзину
-    };
-
-    // Сохранение корзины в localStorage
     useEffect(() => {
-        if (cart.length > 0) {
-            localStorage.setItem("cart", JSON.stringify(cart));
-        }
-    }, [cart]);
-
-    // Загрузка корзины из localStorage
-    useEffect(() => {
-        const savedCart = JSON.parse(localStorage.getItem("cart"));
+        // Загрузка корзины из localStorage при монтировании компонента
+        const savedCart = JSON.parse(localStorage.getItem('cart'));
         if (savedCart) {
             setCart(savedCart);
         }
     }, []);
 
-    // Очистка корзины через 5 минут
     useEffect(() => {
-        const timer = setTimeout(() => {
-            setCart([]);
-            localStorage.removeItem("cart");
-        }, 5 * 60 * 1000);
-
-        return () => clearTimeout(timer);
-    }, []);
-
-    // Проверка наличия продуктов в корзине
-    useEffect(() => {
+        // Сохранение корзины в localStorage при изменении состояния корзины
         if (cart.length > 0) {
-            console.log("Товары в корзине:", cart);
+            localStorage.setItem('cart', JSON.stringify(cart));
         }
     }, [cart]);
 
-    if (products.length === 0) {
-        return (
-            <div className="text-center text-gray-500">Нет продуктов для отображения</div>
-        );
-    }
+    const addToCart = (product) => {
+        // Проверяем, есть ли уже этот товар в корзине
+        const existingProduct = cart.find(item => item._id === product._id);
+
+        if (existingProduct) {
+            // Если товар уже есть в корзине, увеличиваем его количество
+            const updatedCart = cart.map(item =>
+                item._id === product._id ? {...item, quantity: item.quantity + 1} : item
+            );
+            setCart(updatedCart);
+        } else {
+            // Если товара нет в корзине, добавляем его с количеством 1
+            const updatedCart = [...cart, {...product, quantity: 1}];
+            setCart(updatedCart);
+        }
+    };
 
     return (
-        <div>
-            <div className="max-w-7xl mx-auto mt-10 p-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                {products.map((product, index) => (
-                    <ProductCard key={index} product={product} addToCart={addToCart}/>
-                ))}
+        <>
+            <div className="max-w-7xl mx-auto mt-10 px-4 sm:px-6 lg:px-8">
+                <div className="product-grid">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                        {products.map((product) => (
+                            <div key={product._id} className="product-card bg-white shadow-lg rounded-lg p-4">
+                                <img
+                                    src='https://picsum.photos/id/237/200/300' /*{product.image}*/
+                                    alt={product.name}
+                                    className="w-full h-40 object-cover rounded-lg mb-4"
+                                />
+                                <h2 className="text-lg font-semibold text-gray-800">{product.name}</h2>
+                                <p className="text-sm text-gray-600 mt-2">{product.description}</p>
+                                <p className="text-lg font-bold text-gray-900 mt-4">{product.price} €</p>
+                                <button
+                                    onClick={() => addToCart(product)}
+                                    className="mt-4 w-full px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-700"
+                                >
+                                    Добавить в корзину
+                                </button>
+                            </div>
+                        ))}
+                    </div>
+                </div>
             </div>
+        </>
 
-            <div
-                className="fixed bottom-6 right-6 bg-red-500 text-white rounded-full w-8 h-8 flex items-center justify-center">
-                {cart.reduce((total, item) => total + item.quantity, 0)}
-            </div>
-        </div>
     );
 };
 
-export default ProductGrid;
+// Функция для получения данных с API при серверном рендеринге
+// s
+
+export default Home;

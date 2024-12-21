@@ -1,18 +1,23 @@
-const mysql = require('mysql2/promise'); // Используем promise-совместимую версию
+const {MongoClient} = require('mongodb');
 
 // Конфигурация подключения
 const connectionConfig = {
-    host: 'localhost',       // Хост MySQL
-    user: 'root',            // Имя пользователя MySQL
-    password: '',            // Пароль пользователя (замените на свой)
-    database: 'Manilla',     // Имя базы данных
+    uri: 'mongodb://localhost:27017/', // Локальная строка подключения
+    dbName: 'Manilla', // Имя базы данных
 };
 
-// Создаем асинхронную функцию для подключения
 async function getConnection() {
-    const connection = await mysql.createConnection(connectionConfig); // Используем промис
-    console.log('Успешное подключение к MySQL через Node.js');
-    return connection;
+    let client;
+    try {
+        client = new MongoClient(connectionConfig.uri);
+        await client.connect(); // Подключаемся к базе данных
+        console.log('Успешное подключение к MongoDB через Node.js');
+        const db = client.db(connectionConfig.dbName); // Получаем доступ к базе данных
+        return {db, client}; // Возвращаем как db, так и client для возможного закрытия соединения
+    } catch (error) {
+        console.error("Ошибка при подключении к MongoDB:", error);
+        throw new Error("Не удалось подключиться к базе данных");
+    }
 }
 
 module.exports = {getConnection, connectionConfig};

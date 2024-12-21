@@ -2,7 +2,7 @@ import {getConnection} from "../../dbConnection/dbConnection";
 
 /**
  * @swagger
- * /api/orders:
+ * /api/save_order:
  *   post:
  *     description: Добавить новый заказ
  *     requestBody:
@@ -43,7 +43,7 @@ import {getConnection} from "../../dbConnection/dbConnection";
  *                 message:
  *                   type: string
  *                 orderId:
- *                   type: integer
+ *                   type: string
  *       400:
  *         description: Не указаны обязательные поля
  *       500:
@@ -64,7 +64,7 @@ import {getConnection} from "../../dbConnection/dbConnection";
  *                     type: object
  *                     properties:
  *                       id:
- *                         type: integer
+ *                         type: string
  *                       user_id:
  *                         type: integer
  *                       predicted_date:
@@ -87,88 +87,83 @@ import {getConnection} from "../../dbConnection/dbConnection";
  *       500:
  *         description: Ошибка при получении заказов
  */
+
 export default async function handler(req, res) {
     if (req.method === "POST") {
         const {user_id, predicted_date, predicted_time, products, status} = req.body;
 
-        // Проверка на наличие обязательных полей
         if (!user_id || !predicted_date || !predicted_time || !products || products.length === 0) {
             return res.status(400).json({message: "Необходимо указать все обязательные поля"});
         }
 
-        // Проверка на правильность типа данных
-        if (typeof user_id !== 'number') {
-            return res.status(400).json({message: "user_id должен быть числом"});
-        }
-
-        if (!Array.isArray(products)) {
-            return res.status(400).json({message: "products должен быть массивом"});
-        }
-
-        // Проверка формата даты (предполагаем, что дата в формате YYYY-MM-DD)
-        const dateRegex = /^\d{4}-\d{2}-\d{2}$/;
-        if (!dateRegex.test(predicted_date)) {
-            return res.status(400).json({message: "Неверный формат predicted_date. Ожидается YYYY-MM-DD"});
-        }
-
         try {
-            // Подключаемся к базе данных
-            const connection = await getConnection();
+            const {db, client} = await getConnection(); // Получаем подключение к MongoDB
 
-            // Запрос для добавления нового заказа
-            const query = `
-                INSERT INTO Predicted_Orders (user_id, predicted_date, predicted_time, products, status)
-                VALUES (?, ?, ?, ?, ?)
-            `;
+            // Вставляем новый заказ в коллекцию "orders"
+            const ordersCollection = db.collection("orders");
 
-            const values = [
+            const result = await ordersCollection.insertOne({
                 user_id,
                 predicted_date,
                 predicted_time,
-                JSON.stringify(products), // Преобразуем список продуктов в строку JSON
-                status || 'pending' // статус по умолчанию
-            ];
+                products,
+                status: status || 'pending', // Статус по умолчанию
+                created_at: new Date(), // Добавляем текущую дату и время
+            });
 
-            // Выполняем запрос
-            const [result] = await connection.execute(query, values);
+            // Закрываем соединение с базой данных
+            await client.close();
 
-            // Отправляем успешный ответ
-            return res.status(201).json({message: "Заказ успешно создан", orderId: result.insertId});
+            return res.status(201).json({
+                message: "Заказ успешно создан",
+                orderId: result.insertedId.toString(),
+            });
         } catch (error) {
             console.error("Ошибка при добавлении заказа:", error);
             return res.status(500).json({
                 message: "Ошибка при добавлении заказа",
-                error: error.message || "Неизвестная ошибка"
+                error: error.message || "Неизвестная ошибка",
             });
         }
     } else if (req.method === "GET") {
         try {
-            // Подключаемся к базе данных
-            const connection = await getConnection();
+            const {db, client} = await getConnection(); // Получаем подключение к MongoDB
 
-            // Запрос для получения всех заказов
-            const query = 'SELECT * FROM Predicted_Orders';
+            // Получаем все заказы из коллекции "orders"
+            const ordersCollection = db.collection("orders");
+            const orders = await ordersCollection.find().toArray();
 
-            const [rows] = await connection.execute(query);
+            // Закрываем соединение с базой данных
+            await client.close();
 
-            // Обрабатываем поле products
-            const orders = rows.map(order => {
-                return {
-                    ...order,
-                    products: JSON.parse(order.products)  // Преобразуем строку обратно в массив
-                };
-            });
-
-            // Отправляем успешный ответ с данными
             return res.status(200).json({orders});
         } catch (error) {
             console.error("Ошибка при получении заказов:", error);
             return res.status(500).json({
                 message: "Ошибка при получении заказов",
-                error: error.message || "Неизвестная ошибка"
+                error: error.message || "Неизвестная ошибка",
+            });
+        }
+    } else if (req.method === "GET") {
+        try {
+            const {db, client} = await getConnection(); // Получаем подключение к MongoDB
+
+            // Получаем все заказы из коллекции "orders"
+            const ordersCollection = db.collection("orders");
+            const orders = await ordersCollection.find().toArray();
+
+            // Закрываем соединение с базой данных
+            await client.close();
+
+            return res.status(200).json({orders});
+        } catch (error) {
+            console.error("Ошибка при получении заказов:", error);
+            return res.status(500).json({
+                message: "Ошибка при получении заказов",
+                error: error.message || "Неизвестная ошибка",
             });
         }
     } else {
-        res.status(405).json({message: "Метод не поддерживается"});
+        return res.status(405).json({message: "Метод не поддерживается"});
     }
 }

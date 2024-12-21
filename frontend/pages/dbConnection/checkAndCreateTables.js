@@ -1,129 +1,111 @@
 const {getConnection, connectionConfig} = require('./dbConnection');
 
-const tables = [
+const collections = [
     {
         name: 'Product_type',
-        query: `CREATE TABLE Product_type
-                (
-                    id          INT PRIMARY KEY AUTO_INCREMENT,
-                    name        VARCHAR(100) NOT NULL,
-                    description TEXT
-                )`,
+        schema: {
+            id: 'int',
+            name: 'string',
+            description: 'string'
+        }
     },
     {
         name: 'Product',
-        query: `CREATE TABLE Product
-                (
-                    id                 INT PRIMARY KEY AUTO_INCREMENT,
-                    name               VARCHAR(100)   NOT NULL,
-                    description        TEXT,
-                    price              DECIMAL(10, 2) NOT NULL,
-                    image              VARCHAR(255), -- Путь к изображению продукта
-                    product_type_id    INT            NOT NULL,
-                    is_alcoholic       BOOLEAN DEFAULT FALSE,
-                    quantity_available INT,
-                    FOREIGN KEY (product_type_id) REFERENCES Product_type (id)
-                )`,
+        schema: {
+            id: 'int',
+            name: 'string',
+            description: 'string',
+            price: 'decimal',
+            image: 'string',
+            product_type_id: 'int',
+            is_alcoholic: 'boolean',
+            quantity_available: 'int'
+        }
     },
     {
         name: 'Product_quantity',
-        query: `CREATE TABLE Product_quantity
-                (
-                    id         INT PRIMARY KEY AUTO_INCREMENT,
-                    product_id INT NOT NULL,
-                    quantity   INT NOT NULL,
-                    FOREIGN KEY (product_id) REFERENCES Product (id)
-                )`,
+        schema: {
+            id: 'int',
+            product_id: 'int',
+            quantity: 'int'
+        }
     },
     {
         name: 'Role',
-        query: `CREATE TABLE Role
-                (
-                    id          INT PRIMARY KEY AUTO_INCREMENT,
-                    name        VARCHAR(100) NOT NULL,
-                    description TEXT
-                )`,
+        schema: {
+            id: 'int',
+            name: 'string',
+            description: 'string'
+        }
     },
     {
         name: 'User',
-        query: `CREATE TABLE User
-                (
-                    id        INT PRIMARY KEY AUTO_INCREMENT,
-                    FirstName VARCHAR(100) NOT NULL,
-                    LastName  VARCHAR(100) NOT NULL,
-                    Email     VARCHAR(255) NOT NULL UNIQUE,
-                    Password  VARCHAR(255) NOT NULL,
-                    image     VARCHAR(255), -- Путь к изображению аватара пользователя
-                    role_id   INT          NOT NULL,
-                    FOREIGN KEY (role_id) REFERENCES Role (id)
-                )`,
+        schema: {
+            id: 'int',
+            FirstName: 'string',
+            LastName: 'string',
+            Email: 'string',
+            Password: 'string',
+            image: 'string',
+            role_id: 'int'
+        }
     },
     {
         name: 'Transactions',
-        query: `CREATE TABLE Transactions
-                (
-                    id           INT PRIMARY KEY AUTO_INCREMENT,
-                    sku          VARCHAR(50)    NOT NULL,
-                    user_id      INT            NOT NULL,
-                    price_bucket DECIMAL(10, 2) NOT NULL,
-                    date_buy     DATETIME       NOT NULL,
-                    FOREIGN KEY (user_id) REFERENCES User (id)
-                )`,
+        schema: {
+            id: 'int',
+            sku: 'string',
+            user_id: 'int',
+            price_bucket: 'decimal',
+            date_buy: 'datetime'
+        }
     },
     {
         name: 'Transactions_bucket',
-        query: `CREATE TABLE Transactions_bucket
-                (
-                    id             INT PRIMARY KEY AUTO_INCREMENT,
-                    transaction_id INT NOT NULL,
-                    product_id     INT NOT NULL,
-                    quantity       INT NOT NULL DEFAULT 1,
-                    FOREIGN KEY (transaction_id) REFERENCES Transactions (id),
-                    FOREIGN KEY (product_id) REFERENCES Product (id)
-                )`,
+        schema: {
+            id: 'int',
+            transaction_id: 'int',
+            product_id: 'int',
+            quantity: 'int'
+        }
     },
     {
         name: 'Predicted_Orders',
-        query: `CREATE TABLE Predicted_Orders
-                (
-                    id             INT PRIMARY KEY AUTO_INCREMENT,
-                    user_id        INT  NOT NULL,
-                    predicted_date DATE NOT NULL,
-                    predicted_time TIME NOT NULL,
-                    products       JSON NOT NULL,
-                    status         VARCHAR(50) DEFAULT 'pending',
-                    created_at     DATETIME    DEFAULT CURRENT_TIMESTAMP,
-                    FOREIGN KEY (user_id) REFERENCES User (id)
-                )`,
+        schema: {
+            id: 'int',
+            user_id: 'int',
+            predicted_date: 'date',
+            predicted_time: 'time',
+            products: 'json',
+            status: 'string',
+            created_at: 'datetime'
+        }
     },
 ];
 
-
-async function checkAndCreateTables() {
+async function checkAndCreateCollections() {
     try {
-        const connection = await getConnection();
+        const db = await getConnection();
 
-        for (const table of tables) {
-            const [rows] = await connection.query(
-                `SELECT COUNT(*) AS count
-                 FROM information_schema.tables
-                 WHERE table_schema = ? AND table_name = ?`,
-                [connectionConfig.database, table.name] // Используем connectionConfig.database напрямую
-            );
+        for (const collection of collections) {
+            // Check if the collection exists
+            const collectionExists = await db.listCollections({name: collection.name}).hasNext();
 
-            if (rows[0].count === 0) {
-                console.log(`Создаю таблицу: ${table.name}`);
-                await connection.query(table.query);
+            if (!collectionExists) {
+                console.log(`Создаю коллекцию: ${collection.name}`);
+                // Inserting a dummy document to create the collection
+                await db.createCollection(collection.name);
+                // Optionally, you can insert a sample document to start populating the collection
+                await db.collection(collection.name).insertOne({dummy: 'data'});
             } else {
-                console.log(`Таблица ${table.name} уже существует`);
+                console.log(`Коллекция ${collection.name} уже существует`);
             }
         }
 
-        await connection.end();
-        console.log('Проверка таблиц завершена.');
+        console.log('Проверка коллекций завершена.');
     } catch (error) {
-        console.error('Ошибка при проверке или создании таблиц:', error);
+        console.error('Ошибка при проверке или создании коллекций:', error);
     }
 }
 
-checkAndCreateTables();
+checkAndCreateCollections();
