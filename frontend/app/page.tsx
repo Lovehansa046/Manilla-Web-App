@@ -1,65 +1,118 @@
-"use client";
+"use client"
 
-import React from 'react';
+import Navbar from "@/app/components/Navbar";
+import Footer from "@/app/components/Footer";
 
-export default function Home() {
+export default function HomePage() {
     return (
-        <div className="main_page">
-            <div className="Main">
-                <div className="Logo">
-                    <div className="Image">
-                        <img src="/image/image-removebg-preview.png" width={150} className="mx-auto"/>
+        <>
+            <Navbar></Navbar>
+            <div className="offer" data-id="8:220">
+                <div className="pre-offer">
+                    <div className="img" data-id="8:206">
+                        <img className="picture-offer" src="/image/721b4b3c36cdbeb31a126bf749555a9d.jpg"
+                             alt="Блюдо недели"/>
                     </div>
-                    <div className="Text-logo text-center sm:text-lg md:text-xl">
-                        MANILLA — место, где каждый вкус раскрывает уютный вечер с близкими!
-                    </div>
-                    <div className="Text-title text-center sm:text-lg md:text-xl">
-                        Ваша радость — наша забота!
+                    <div className="text">
+                        <div className="text-title" data-id="8:194">
+                            "Блюдо недели — Карбонара! Безумная скидка, не упусти шанс насладиться классикой
+                            итальянской
+                            кухни по невероятной цене!"
+                        </div>
+                        <div className="price" data-id="8:207">12,99$</div>
                     </div>
                 </div>
-                <main className="w-full h-screen flex flex-col items-center justify-center px-4">
-                    <div className="max-w-sm w-full text-gray-600">
-                        <div className="text-center">
-                            <div className="mt-5 space-y-2">
-                                <h3 className="text-gray-800 text-2xl font-bold sm:text-xl md:text-2xl">Log In to Your
-                                    MANILLA Account</h3>
-                                <p className="">Don't have an account? <a href="sign-up"
-                                                                          className="font-medium text-red-500 hover:text-red-900">Sign
-                                    up</a></p>
+            </div>
+            <div className="offer" data-id="8:220">
+                <div className="pre-offer">
+                    <div className="img" data-id="8:206">
+                        <img className="picture-offer" src="/image/721b4b3c36cdbeb31a126bf749555a9d.jpg"
+                             alt="Блюдо недели"/>
+                    </div>
+                    <div className="text">
+                        <div className="text-title" data-id="8:194">
+                            "Блюдо недели — Карбонара! Безумная скидка, не упусти шанс насладиться классикой
+                            итальянской
+                            кухни по невероятной цене!"
+                        </div>
+                        <div className="price" data-id="8:207">12,99$</div>
+                    </div>
+                </div>
+            </div>
+            <div className="offer" data-id="8:220">
+                <div className="pre-offer">
+                    <div className="img" data-id="8:206">
+                        <img className="picture-offer" src="/image/721b4b3c36cdbeb31a126bf749555a9d.jpg"
+                             alt="Блюдо недели"/>
+                    </div>
+                    <div className="text">
+                        <div className="text-title" data-id="8:194">
+                            "Блюдо недели — Карбонара! Безумная скидка, не упусти шанс насладиться классикой
+                            итальянской
+                            кухни по невероятной цене!"
+                        </div>
+                        <div className="price" data-id="8:207">12,99$</div>
+                    </div>
+                </div>
+            </div>
+            <div className="main_page">
+                <div className="Great-offer">
+                    <div className="Great-text-offer">
+                        Наиболее популярные
+                    </div>
+                    <div className="cards-container">
+                        <div className="card">
+                            <img src="/image/crop__2_2.jpg" alt="Лазанья классическая"/>
+                            <div className="card-body">
+                                <h3>Лазанья классическая</h3>
+                                <p>10,99$</p>
+                                <button className="add-btn">+</button>
                             </div>
                         </div>
-                        <form onSubmit={(e) => e.preventDefault()} className="mt-8 space-y-5">
-                            <div>
-                                <label className="font-medium">Email</label>
-                                <input
-                                    type="email"
-                                    required
-                                    className="w-full mt-2 px-3 py-2 text-gray-500 bg-transparent outline-none border focus:border-red-900 shadow-sm rounded-lg"
-                                />
+                        <div className="card">
+                            <img src="/image/crop__2_2.jpg" alt="Лазанья классическая"/>
+                            <div className="card-body">
+                                <h3>Лазанья классическая</h3>
+                                <p>10,99$</p>
+                                <button className="add-btn">+</button>
                             </div>
-                            <div>
-                                <label className="font-medium">Password</label>
-                                <input
-                                    type="password"
-                                    required
-                                    className="w-full mt-2 px-3 py-2 text-gray-500 bg-transparent outline-none border focus:border-red-900 shadow-sm rounded-lg"
-                                />
+                        </div>
+                        <div className="card">
+                            <img src="/image/crop__2_2.jpg" alt="Лазанья классическая"/>
+                            <div className="card-body">
+                                <h3>Лазанья классическая</h3>
+                                <p>10,99$</p>
+                                <button className="add-btn">+</button>
                             </div>
-
-                            <button
-                                className="w-full px-4 py-2 text-white font-medium bg-red-500 hover:bg-red-500 active:bg-red-900 rounded-lg duration-150">
-                                <a href="/home">
-                                    Sign in
-                                </a>
-                            </button>
-
-                            <div className="text-center">
-                                <a href="javascript:void(0)" className="hover:text-red-900">Forgot password?</a>
+                        </div>
+                        <div className="card">
+                            <img src="/image/crop__2_2.jpg" alt="Лазанья классическая"/>
+                            <div className="card-body">
+                                <h3>Лазанья классическая</h3>
+                                <p>10,99$</p>
+                                <button className="add-btn">+</button>
                             </div>
-                        </form>
+                        </div>
+                        <div className="card">
+                            <img src="/image/crop__2_2.jpg" alt="Лазанья классическая"/>
+                            <div className="card-body">
+                                <h3>Лазанья классическая</h3>
+                                <p>10,99$</p>
+                                <button className="add-btn">+</button>
+                            </div>
+                        </div>
+                        <div className="card">
+                            <img src="/image/crop__2_2.jpg" alt="Лазанья классическая"/>
+                            <div className="card-body">
+                                <h3>Лазанья классическая</h3>
+                                <p>10,99$</p>
+                                <button className="add-btn">+</button>
+                            </div>
+                        </div>
                     </div>
-                </main>
+                </div>
             </div>
-        </div>
-    );
+            <Footer></Footer>
+        </>
+    )
 }

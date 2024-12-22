@@ -10,13 +10,20 @@ export default async function handler(req, res) {
         }
 
         try {
-            // Хеширование пароля перед сохранением в базу данных
-            const hashedPassword = await bcrypt.hash(Password, 10);
-
             // Получаем подключение к базе данных MongoDB
             const {db, client} = await getConnection(); // Деструктурируем db и client
 
-            // Проверяем, существует ли роль в базе данных, если нет, то создаем её
+            // Проверяем, существует ли пользователь с таким email
+            const existingUser = await db.collection("User").findOne({Email});
+
+            if (existingUser) {
+                return res.status(400).json({message: "Пользователь с таким email уже существует"});
+            }
+
+            // Хеширование пароля перед сохранением в базу данных
+            const hashedPassword = await bcrypt.hash(Password, 10);
+
+            // Проверяем, существует ли роль в базе данных
             const rolesCollection = db.collection("Role");
             let role = await rolesCollection.findOne({id: role_id});
 
@@ -28,11 +35,8 @@ export default async function handler(req, res) {
                 });
             }
 
-            // Получаем коллекцию пользователей
-            const usersCollection = db.collection("User");
-
             // Добавление пользователя в коллекцию
-            const result = await usersCollection.insertOne({
+            const result = await db.collection("User").insertOne({
                 FirstName,
                 LastName,
                 Email,
@@ -119,7 +123,7 @@ export default async function handler(req, res) {
  *                   type: string
  *                   description: Идентификатор созданного пользователя
  *       400:
- *         description: Не указаны обязательные поля
+ *         description: Не указаны обязательные поля или email уже существует
  *       500:
  *         description: Ошибка при добавлении пользователя и роли
  */
@@ -159,4 +163,3 @@ export default async function handler(req, res) {
  *       500:
  *         description: Ошибка при извлечении пользователей
  */
-
