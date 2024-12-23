@@ -5,6 +5,7 @@ const nextConfig: NextConfig = {
     images: {
         domains: ['example.com'], // Пример для добавления доменов для изображений
     },
+
 };
 
 export default nextConfig;
