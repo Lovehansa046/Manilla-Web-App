@@ -1,4 +1,4 @@
-"use client";
+'use client'
 
 import React, {useEffect, useState} from "react";
 
@@ -27,8 +27,25 @@ export default function Login() {
             const data = await response.json();
 
             if (response.ok) {
-                // Если авторизация успешна, редиректим на главную страницу
-                window.location.href = "/";
+                // Сохраняем token в localStorage
+                localStorage.setItem("token", data.token);
+
+                // Сохраняем role_id в localStorage
+                if (data.role_id) {
+                    localStorage.setItem("role_id", data.role_id);
+                }
+
+                // Сохраняем роль
+                if (data.role) {
+                    localStorage.setItem("role", data.role);
+                }
+
+                // Проверяем роль пользователя
+                if (data.role === "admin") {
+                    window.location.href = "/admin/users"; // Администратор перенаправляется на страницу всех пользователей
+                } else {
+                    window.location.href = "/"; // Обычный пользователь перенаправляется на домашнюю страницу
+                }
             } else {
                 setErrorMessage(data.message || "Произошла ошибка");
             }
@@ -37,7 +54,6 @@ export default function Login() {
         }
     };
 
-    // Функция для очистки всех cookies
     const clearCookies = () => {
         const cookies = document.cookie.split(";");
         cookies.forEach((cookie) => {
@@ -46,21 +62,22 @@ export default function Login() {
         });
     };
 
+    const clearLocalStorage = () => {
+        localStorage.removeItem("token");
+        localStorage.removeItem("role_id");
+        localStorage.removeItem("role");
+    };
     useEffect(() => {
-        // Очистка cookies при загрузке страницы логина
+        clearLocalStorage();
         clearCookies();
-    }, []); // Запустится только один раз, когда компонент монтируется
+    }, []);
 
     return (
         <div className="main_page">
             <div className="Main">
                 <div className="Logo">
                     <div className="Image">
-                        <img
-                            src="/image/image-removebg-preview.png"
-                            width={150}
-                            className="mx-auto"
-                        />
+                        <img src="/image/image-removebg-preview.png" width={150} className="mx-auto"/>
                     </div>
                     <div className="Text-logo text-center sm:text-lg md:text-xl">
                         MANILLA — место, где каждый вкус раскрывает уютный вечер с близкими!
@@ -76,22 +93,15 @@ export default function Login() {
                                 <h3 className="text-gray-800 text-2xl font-bold sm:text-xl md:text-2xl">
                                     Log In to Your MANILLA Account
                                 </h3>
-                                <p className="">
+                                <p>
                                     Don't have an account?{" "}
-                                    <a
-                                        href="sign-up"
-                                        className="font-medium text-red-500 hover:text-red-900"
-                                    >
+                                    <a href="sign-up" className="font-medium text-red-500 hover:text-red-900">
                                         Sign up
                                     </a>
                                 </p>
                             </div>
                         </div>
-                        {errorMessage && (
-                            <div className="text-red-500 text-center mb-4">
-                                {errorMessage}
-                            </div>
-                        )}
+                        {errorMessage && <div className="text-red-500 text-center mb-4">{errorMessage}</div>}
                         <form onSubmit={handleSubmit} className="mt-8 space-y-5">
                             <div>
                                 <label className="font-medium">Email</label>
@@ -114,10 +124,8 @@ export default function Login() {
                                 />
                             </div>
 
-                            <button
-                                type="submit"
-                                className="w-full px-4 py-2 text-white font-medium bg-red-500 hover:bg-red-500 active:bg-red-900 rounded-lg duration-150"
-                            >
+                            <button type="submit"
+                                    className="w-full px-4 py-2 text-white font-medium bg-red-500 hover:bg-red-500 active:bg-red-900 rounded-lg duration-150">
                                 Sign in
                             </button>
 

@@ -1,4 +1,3 @@
-// pages/api/auth/verifyToken.js
 import jwt from 'jsonwebtoken';
 
 const JWT_SECRET = process.env.JWT_SECRET;
@@ -17,7 +16,12 @@ export default function handler(req, res) {
             // Проверяем токен
             const decoded = jwt.verify(token, JWT_SECRET);
             console.log("Decoded Token:", decoded); // Логируем результат декодирования
-            return res.status(200).json({valid: true, decoded});
+
+            // Извлекаем ID роли из декодированного токена
+            const roleId = decoded.role_id; // Предположим, что роль сохраняется как role_id в токене
+            console.log("Role ID:", roleId); // Логируем ID роли для отладки
+
+            return res.status(200).json({valid: true, decoded, roleId}); // Отправляем roleId в ответе
         } catch (error) {
             console.error("Token verification failed:", error); // Логируем ошибку
             return res.status(401).json({message: 'Невалидный токен', error: error.message});
@@ -26,5 +30,3 @@ export default function handler(req, res) {
         return res.status(405).json({message: 'Метод не поддерживается'});
     }
 }
-
-

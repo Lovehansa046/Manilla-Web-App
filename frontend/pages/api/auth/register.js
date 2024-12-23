@@ -2,10 +2,12 @@ import {getConnection} from '../../dbConnection/dbConnection';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import dotenv from 'dotenv';
+import {ObjectId} from 'mongodb'; // Импорт ObjectId
 
 dotenv.config();
 
 const JWT_SECRET = process.env.JWT_SECRET;
+const FIXED_ROLE_ID = '676823d21e6062779cfd474e'; // Перманентный ID роли
 
 if (!JWT_SECRET) {
     throw new Error('JWT_SECRET не задан в переменных окружения');
@@ -13,9 +15,9 @@ if (!JWT_SECRET) {
 
 export default async function handler(req, res) {
     if (req.method === 'POST') {
-        const {FirstName, LastName, Email, Password, image, role_id} = req.body;
+        const {FirstName, LastName, Email, Password} = req.body;
 
-        if (!FirstName || !LastName || !Email || !Password || !role_id) {
+        if (!FirstName || !LastName || !Email || !Password) {
             return res.status(400).json({message: 'Необходимо указать все обязательные поля'});
         }
 
@@ -33,25 +35,24 @@ export default async function handler(req, res) {
             // Хешируем пароль перед сохранением
             const hashedPassword = await bcrypt.hash(Password, 10);
 
-            // Проверка существования роли и создание ее, если нужно
+            // Проверка существования роли по фиксированному ID
             const rolesCollection = db.collection('Role');
-            let role = await rolesCollection.findOne({id: role_id});
+            const role = await rolesCollection.findOne({_id: new ObjectId(FIXED_ROLE_ID)});
 
             if (!role) {
-                role = await rolesCollection.insertOne({
-                    id: role_id,
-                    name: `Role_${role_id}`,
-                });
+                await client.close();
+                return res.status(500).json({message: 'Роль с заданным ID не найдена'});
             }
 
-            // Добавляем нового пользователя
+            // Добавляем нового пользователя с привязкой к роли
             const result = await usersCollection.insertOne({
                 FirstName,
                 LastName,
                 Email,
                 Password: hashedPassword,
-                image,
-                role_id: role._id, // Ссылаемся на роль в коллекции
+                image: "http://dummyimage.com/150x150.jpg/99cccc",
+                role_id: role._id, // Ссылка на роль
+                createdAt: new Date(),
             });
 
             // Закрываем подключение

@@ -3,9 +3,9 @@ import bcrypt from "bcrypt";
 
 export default async function handler(req, res) {
     if (req.method === "POST") {
-        const {FirstName, LastName, Email, Password, image, role_id} = req.body;
+        const {FirstName, LastName, Email, Password, image, roleName} = req.body;
 
-        if (!FirstName || !LastName || !Email || !Password || !role_id) {
+        if (!FirstName || !LastName || !Email || !Password || !roleName) {
             return res.status(400).json({message: "Необходимо указать все обязательные поля"});
         }
 
@@ -23,17 +23,20 @@ export default async function handler(req, res) {
             // Хеширование пароля перед сохранением в базу данных
             const hashedPassword = await bcrypt.hash(Password, 10);
 
-            // Проверяем, существует ли роль в базе данных
+            // Проверяем, существует ли роль с таким названием
             const rolesCollection = db.collection("Role");
-            let role = await rolesCollection.findOne({id: role_id});
+            let role = await rolesCollection.findOne({name: roleName});
 
             if (!role) {
-                // Если роль не найдена, создаём её
+                // Если роль не найдена, создаем ее
                 role = await rolesCollection.insertOne({
-                    id: role_id,
-                    name: `Role_${role_id}` // Пример: генерируем имя роли
+                    name: roleName, // Пример: генерируем имя роли
+                    createdAt: new Date()
                 });
             }
+
+            // Извлекаем role_id после того, как нашли или создали роль
+            let role_id = role._id;
 
             // Добавление пользователя в коллекцию
             const result = await db.collection("User").insertOne({
@@ -42,7 +45,7 @@ export default async function handler(req, res) {
                 Email,
                 Password: hashedPassword,
                 image,
-                role_id: role._id, // Ссылаемся на роль в коллекции
+                role_id, // Ссылаемся на роль в коллекции
             });
 
             // Закрываем подключение к базе данных
@@ -107,8 +110,8 @@ export default async function handler(req, res) {
  *               image:
  *                 type: string
  *                 description: URL изображения пользователя
- *               role_id:
- *                 type: integer
+ *               roleName:
+ *                 type: string
  *     responses:
  *       201:
  *         description: Пользователь и роль успешно созданы
@@ -157,7 +160,9 @@ export default async function handler(req, res) {
  *                       image:
  *                         type: string
  *                       role_id:
- *                         type: integer
+ *                         type: string
+ *                       roleName:
+ *                         type: string
  *       404:
  *         description: Пользователи не найдены
  *       500:
