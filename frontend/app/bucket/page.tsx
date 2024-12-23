@@ -40,6 +40,10 @@ const Cart = () => {
         }
     };
 
+    const handleRemoveCart = () => {
+        localStorage.removeItem('cart');
+    }
+
     const totalPrice = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
 
     // Date Picker Logic
@@ -58,6 +62,7 @@ const Cart = () => {
             [name]: value,
         }));
     };
+
 
     const handleSaveDateTime = async () => {
         const orderData = {
@@ -183,7 +188,10 @@ const Cart = () => {
                         <div className="flex justify-between">
                             <button
                                 className="bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600"
-                                onClick={handleSaveDateTime}
+                                onClick={() => {
+                                    handleSaveDateTime();
+                                    handleRemoveCart();
+                                }}
                             >
                                 Сохранить
                             </button>
