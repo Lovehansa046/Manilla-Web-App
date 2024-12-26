@@ -1,0 +1,60 @@
+openapi: 3.0.0
+info:
+  title: Product API
+  description: API для работы с продуктами и типами продуктов
+  version: 1.0.0
+paths:
+  /api/product-types:
+    post:
+      summary: Создание типа продукта
+      description: Создает новый тип продукта.
+      operationId: createProductType
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  description: Название типа продукта.
+                  example: "Напитки"
+                description:
+                  type: string
+                  description: Описание типа продукта.
+                  example: "Все виды напитков"
+      responses:
+        '201':
+          description: Тип продукта успешно создан
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Тип продукта успешно создан"
+                  productTypeId:
+                    type: integer
+                    example: 1
+        '400':
+          description: Ошибка валидации
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Необходимо указать имя типа продукта"
+        '500':
+          description: Ошибка сервера
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Ошибка при добавлении типа продукта"

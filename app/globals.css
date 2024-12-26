@@ -1,0 +1,209 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.main_page {
+    @apply flex justify-center items-center min-h-screen;
+}
+
+.Main {
+    @apply inline-flex items-center mx-auto p-4 flex-col sm:flex-row;
+    /* На мобильных устройствах flex-col, на больших экранах flex-row */
+}
+
+/* Адаптация для мобильных */
+.Logo {
+    @apply flex flex-col items-center text-center mb-8;
+}
+
+/* Картинка будет адаптироваться с максимальной шириной 100% на мобильных устройствах */
+.Image img {
+    max-width: 100%; /* Картинка будет масштабироваться в зависимости от размера экрана */
+    @apply w-80 mb-4;
+}
+
+/* Для текста с логотипом, добавлен padding и улучшена мобильная адаптация */
+.Text-logo {
+    padding: 15px;
+    @apply text-lg font-light mt-2 sm:text-base md:text-lg;
+    /* Уменьшение текста на мобильных и увеличение на больших экранах */
+}
+
+/* Для заголовка добавлены адаптивные изменения */
+.Text-title {
+    padding: 15px;
+    @apply text-lg font-bold mt-1 sm:text-base md:text-lg;
+    /* Адаптация размера текста */
+}
+
+.offer {
+    @apply flex items-center;
+    justify-content: flex-start;
+    width: 80%;
+    margin: 0 auto;
+    gap: 30px;
+    padding: 30px;
+    flex-wrap: wrap;
+}
+
+.pre-offer {
+    border-radius: 20px;
+    @apply flex;
+    background: rgba(241, 233, 233, 0.4);
+    border: 0.01em solid black;
+    width: auto;
+    padding: 20px;
+}
+
+.img {
+    @apply flex items-center;
+    justify-content: center; /* Центровка изображения при адаптации */
+}
+
+.picture-offer {
+    border-radius: 20px;
+    width: 300px;
+    height: 300px;
+}
+
+.text {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 40px;
+    gap: 20px;
+    color: black;
+    font-weight: bold;
+    width: 80%;
+}
+
+.text-title {
+    font-size: 20px; /* Уменьшение текста при адаптации */
+    font-family: "Times New Roman", serif;
+    font-style: italic;
+    text-align: center;
+}
+
+.price {
+    font-size: 28px;
+    @apply text-red-600 font-bold;
+    text-align: right;
+}
+
+/* Адаптация для экранов меньше 768px */
+@media (max-width: 768px) {
+    .offer {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .pre-offer {
+        flex-direction: column;
+        width: 100%;
+        padding: 20px;
+    }
+
+    .picture-offer {
+        width: 300px; /* Увеличение изображения */
+        height: 300px;
+    }
+
+    .text {
+        padding: 20px;
+        width: 100%;
+    }
+
+    .text-title {
+        font-size: 18px; /* Дополнительное уменьшение текста */
+    }
+
+    .price {
+        font-size: 28px; /* Цена остается неизменной */
+    }
+}
+
+/* Адаптация для экранов меньше 480px */
+@media (max-width: 480px) {
+    .picture-offer {
+        width: 200px; /* Максимизация изображения */
+        height: 200px;
+    }
+
+    .text {
+        padding: 10px;
+    }
+
+    .text-title {
+        font-size: 16px; /* Еще меньше текст */
+    }
+}
+
+
+.main_page {
+    @apply flex justify-center items-center min-h-screen;
+}
+
+.Great-offer {
+    text-align: center;
+    max-width: 900px;
+}
+
+.Great-text-offer {
+    font-size: 1.5rem;
+    margin-bottom: 1.5rem;
+    font-weight: bold;
+}
+
+.cards-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 50px;
+}
+
+.card {
+    width: 250px;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    background-color: #fff;
+}
+
+.card img {
+    width: 100%;
+    height: auto;
+}
+
+.card-body {
+    padding: 1rem;
+    text-align: center;
+}
+
+.card-body h3 {
+    font-size: 1.25rem;
+    margin: 0.5rem 0;
+}
+
+.card-body p {
+    margin: 0.25rem 0;
+    font-size: 1rem;
+    color: #555;
+}
+
+.add-btn {
+    background-color: #f97316;
+    border: none;
+    border-radius: 50%;
+    color: #fff;
+    font-size: 1.25rem;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+}
+
+.add-btn:hover {
+    background-color: #ea580c;
+}
