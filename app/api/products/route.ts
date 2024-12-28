@@ -1,5 +1,6 @@
 import {NextResponse} from 'next/server';
 import {getConnection} from "@/backend/dbConnection/dbConnection";
+import {ObjectId} from "mongodb";
 
 interface Product {
     name: string;
@@ -75,6 +76,15 @@ async function createProduct(req: Request) {
         return NextResponse.json({message: "Необходимо указать имя, цену и тип продукта"}, {status: 400});
     }
 
+    // Дополнительная валидация
+    if (typeof price !== 'number' || price <= 0) {
+        return NextResponse.json({message: "Цена должна быть положительным числом"}, {status: 400});
+    }
+
+    if (typeof product_type_id !== 'number' || product_type_id <= 0) {
+        return NextResponse.json({message: "Некорректный тип продукта"}, {status: 400});
+    }
+
     try {
         const {db} = await getConnection();
 
@@ -112,6 +122,98 @@ async function createProduct(req: Request) {
  *         schema:
  *           type: string
  *           description: Тип продукта для фильтрации
+ *       - in: query
+ *         name: price_min
+ *         required: false
+ *         schema:
+ *           type: number
+ *           format: float
+ *           description: Минимальная цена для фильтрации
+ *       - in: query
+ *         name: price_max
+ *         required: false
+ *         schema:
+ *           type: number
+ *           format: float
+ *           description: Максимальная цена для фильтрации
+ *       - in: query
+ *         name: is_alcoholic
+ *         required: false
+ *         schema:
+ *           type: boolean
+ *           description: Фильтрация по наличию алкоголя
+ *     responses:
+ *       200:
+ *         description: Список продуктов
+ *       500:
+ *         description: Ошибка при получении данных
+ */
+// async function getProducts(req: Request) {
+//     const url = new URL(req.url);
+//     const type_product = url.searchParams.get('type_product');
+//     const price_min = parseFloat(url.searchParams.get('price_min') || '0');
+//     const price_max = parseFloat(url.searchParams.get('price_max') || 'Infinity');
+//     const is_alcoholic = url.searchParams.get('is_alcoholic');
+//
+//     try {
+//         const {db} = await getConnection();
+//
+//         // Создаем условия фильтрации
+// // Типизация запроса для фильтрации продуктов
+//         const query: {
+//             product_type_id?: number;
+//             price?: { $gte?: number; $lte?: number };
+//             is_alcoholic?: boolean;
+//         } = {};
+//
+//         if (type_product) {
+//             query.product_type_id = parseInt(type_product);
+//         }
+//
+//         if (!isNaN(price_min)) {
+//             query.price = {$gte: price_min};
+//         }
+//
+//         if (!isNaN(price_max)) {
+//             query.price = {...query.price, $lte: price_max};
+//         }
+//
+//         if (is_alcoholic !== null) {
+//             query.is_alcoholic = is_alcoholic === 'true';
+//         }
+//
+//         // Получаем список продуктов, соответствующих фильтру
+//         const products = await db.collection('Product').find(query).toArray();
+//
+//         return NextResponse.json({products});
+//     } catch (error) {
+//         console.error("Ошибка при получении продуктов:", error);
+//         return NextResponse.json({message: "Ошибка при получении данных", error: String(error)}, {status: 500});
+//     }
+// }
+
+export async function POST(req: Request) {
+    return createProduct(req);
+}
+
+// export async function GET(req: Request) {
+//     return getProducts(req);
+// }
+
+// GET Handler
+/**
+ * @swagger
+ * /api/products:
+ *   get:
+ *     summary: Получить список всех продуктов или отфильтрованных по типу
+ *     description: Получить список всех продуктов или отфильтрованных по типу
+ *     parameters:
+ *       - in: query
+ *         name: type_product
+ *         required: false
+ *         schema:
+ *           type: string
+ *           description: Тип продукта для фильтрации
  *     responses:
  *       200:
  *         description: Список продуктов
@@ -120,26 +222,27 @@ async function createProduct(req: Request) {
  */
 async function getProducts(req: Request) {
     const url = new URL(req.url);
-    const type_product = url.searchParams.get('type_product');
+    const type_product = url.searchParams.get("type_product");  // Получаем параметр из URL
 
     try {
         const {db} = await getConnection();
 
-        // Если type_product не передан, используем пустой запрос для получения всех продуктов
-        const query = type_product ? {product_type_id: parseInt(type_product)} : {};
+        // Если type_product передан, конвертируем его в ObjectId для фильтрации
+        const query = type_product
+            ? {product_type_id: new ObjectId(type_product)}  // Преобразуем строку в ObjectId
+            : {};  // Если type_product не передан, получаем все продукты
 
         // Получаем список продуктов, соответствующих фильтру
-        const products = await db.collection('Product').find(query).toArray();
+        const products = await db.collection("Product").find(query).toArray();
 
         return NextResponse.json({products});
     } catch (error) {
         console.error("Ошибка при получении продуктов:", error);
-        return NextResponse.json({message: "Ошибка при получении данных", error: String(error)}, {status: 500});
+        return NextResponse.json(
+            {message: "Ошибка при получении данных", error: String(error)},
+            {status: 500}
+        );
     }
-}
-
-export async function POST(req: Request) {
-    return createProduct(req);
 }
 
 export async function GET(req: Request) {

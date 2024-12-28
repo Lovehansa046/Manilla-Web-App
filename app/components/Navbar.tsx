@@ -60,11 +60,27 @@ const ProfileDropDown: React.FC<ProfileDropDownProps> = (props) => {
     const profileRef = useRef<HTMLButtonElement | null>(null);
 
     async function logout() {
-        const response = await fetch('/api/auth/logout', {
-            method: 'POST',  // Используем POST-запрос
-        })
-        const data = await response.json()
-        console.log(data.message)  // Выводим сообщение
+        try {
+            const response = await fetch('/api/auth/logout', {
+                method: 'POST',  // Используем POST-запрос
+            });
+
+            if (response.ok) {
+                const data = await response.json();
+                console.log(data.message); // Выводим сообщение
+
+                // Очистка localStorage
+                localStorage.removeItem('token'); // Удаляем токен
+                localStorage.clear(); // Полная очистка, если необходимо
+
+                // Перенаправление на главную страницу
+                window.location.href = '/';
+            } else {
+                console.error('Ошибка при выходе:', response.status);
+            }
+        } catch (error) {
+            console.error('Ошибка:', error);
+        }
     }
 
 

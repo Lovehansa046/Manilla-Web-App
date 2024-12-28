@@ -16,7 +16,7 @@ export async function POST(req: Request) {
             return NextResponse.json({message: 'Необходимо указать email и пароль'}, {status: 400});
         }
 
-        const {db, client} = await getConnection();
+        const {db} = await getConnection();
         const user = await db.collection('User').findOne({Email});
 
         if (!user) {
@@ -39,17 +39,18 @@ export async function POST(req: Request) {
             {expiresIn: '1h'}
         );
 
+
         const tokenExpiresAt = new Date(Date.now() + 3600 * 1000); // Токен истекает через 1 час
 
         await db.collection('User').updateOne(
             {_id: user._id},
-            {$set: {token, tokenExpiresAt}}
+            {$set: {token, user_id: user._id, tokenExpiresAt}}
         );
 
         // Установка токена в cookie
         const response = NextResponse.json({
             message: 'Авторизация успешна',
-            token,
+            token, user_id: user._id,
             expiresAt: tokenExpiresAt
         }, {status: 200});
         response.headers.set('Set-Cookie', `token=${token}; HttpOnly; Path=/; Max-Age=3600; Secure`);

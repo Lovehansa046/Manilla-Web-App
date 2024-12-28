@@ -17,6 +17,7 @@ export default function handler(req, res) {
             // Проверяем токен
             const decoded = jwt.verify(token, JWT_SECRET);
             console.log("Decoded Token:", decoded); // Логируем результат декодирования
+
             return res.status(200).json({valid: true, decoded});
         } catch (error) {
             console.error("Token verification failed:", error); // Логируем ошибку

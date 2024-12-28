@@ -4,31 +4,78 @@ import React, {ChangeEvent, useEffect, useState} from 'react';
 import Navbar from "@/app/components/Navbar";
 import Footer from "@/app/components/Footer";
 import Image from 'next/image'
+import DatePicker from 'react-datepicker';
+import 'react-datepicker/dist/react-datepicker.css';
 
 interface CartItem {
-    _id: string;  // или number, в зависимости от типа вашего id
+    _id: string;
     name: string;
     description: string;
-    price: number;  // Убедитесь, что поле 'price' присутствует и типизировано как число
+    price: number;
     quantity: number;
 }
 
 const Cart = () => {
-    const [cart, setCart] = useState<CartItem[]>([]);  // Типизируем состояние корзины
+    const [cart, setCart] = useState<CartItem[]>([]);
     const [showDatePicker, setShowDatePicker] = useState(false);
     const [selectedDateTime, setSelectedDateTime] = useState({
         date: "",
         time: "",
     });
+    const [errorMessage, setErrorMessage] = useState<string | null>(null);
+    const [, setUser] = useState(null);
+    const [, setLoading] = useState(true);
+    const [, setError] = useState<string>('');
 
     useEffect(() => {
         const savedCart = localStorage.getItem('cart');
-
-        // Проверяем, что savedCart не null, прежде чем парсить
         if (savedCart) {
             setCart(JSON.parse(savedCart));
         }
     }, []);
+
+    useEffect(() => {
+        // Проверка, что код выполняется в браузере
+        if (typeof window !== 'undefined') {
+            const userId = localStorage.getItem('user_id_token');
+
+            if (!userId) {
+                setError('Пользователь не авторизован');
+                setLoading(false);
+                return;
+            }
+
+            const fetchUserData = async () => {
+                try {
+                    // Запрос данных пользователя из базы данных
+                    const response = await fetch(`/api/users/${userId}`);
+
+                    if (response.ok) {
+                        const data = await response.json();
+                        const userFromDb = data.user_id;  // Данные из базы данных
+
+                        if (userId !== userFromDb) {
+                            // Если ID из localStorage не совпадает с ID из базы данных, выполняем нужные действия
+                            setError('ID пользователя не совпадает с данным в базе данных');
+                            setLoading(false);
+                            return;
+                        }
+
+                        setUser(userFromDb);  // Устанавливаем данные пользователя, если совпадают
+                    } else {
+                        setError('Пользователь не найден в базе данных');
+                    }
+                } catch (err) {
+                    console.error(err);
+                    setError('Ошибка при загрузке данных пользователя');
+                } finally {
+                    setLoading(false);
+                }
+            };
+
+            fetchUserData();
+        }
+    }, []); // Пустой массив зависимостей, чтобы код выполнялся только при монтировании компонента
 
     useEffect(() => {
         if (cart.length > 0) {
@@ -56,11 +103,10 @@ const Cart = () => {
 
     const handleRemoveCart = () => {
         localStorage.removeItem('cart');
-    }
+    };
 
     const totalPrice = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
 
-    // Date Picker Logic
     const handleOpenDatePicker = () => {
         setShowDatePicker(true);
     };
@@ -76,18 +122,67 @@ const Cart = () => {
             [name]: value,
         }));
     };
+    // const userId = localStorage.getItem('user_id_token');
+    //
+    // if (userId != user_db) {
+    //
+    //
+    //     ...userId
+    //     const user_id = ;
+    //     return user_id;
+    // }
+
 
 
     const handleSaveDateTime = async () => {
+        const currentDate = new Date();
+        const selectedDate = new Date(selectedDateTime.date);
+        const selectedTime = selectedDateTime.time ? new Date(`${selectedDateTime.date}T${selectedDateTime.time}:00`) : null;
+
+        const minTime = new Date(currentDate.getTime() + 30 * 60 * 1000); // минимум через 30 минут
+        const maxDate = new Date();
+        maxDate.setDate(currentDate.getDate() + 14); // максимум через 14 дней
+
+        // Проверка времени: нельзя заказать до 10:00 и после 11:30
+        const minAllowedTime = new Date(selectedDate);
+        minAllowedTime.setHours(10, 0, 0, 0); // 10:00
+        const maxAllowedTime = new Date(selectedDate);
+        maxAllowedTime.setHours(23, 30, 0, 0); // 11:30
+
+        if (selectedDate < currentDate) {
+            setErrorMessage("Выберите дату и время не раньше текущего момента.");
+            return;
+        }
+
+        // Проверка: время не раньше чем через 30 минут
+        if (selectedTime && selectedTime < minTime) {
+            setErrorMessage("Выберите время не раньше чем через 30 минут.");
+            return;
+        }
+
+        if (selectedDate > maxDate) {
+            setErrorMessage("Выберите дату не позже чем через 14 дней.");
+            return;
+        }
+
+        if (selectedTime && (selectedTime < minAllowedTime || selectedTime > maxAllowedTime)) {
+            setErrorMessage("Выберите время между 10:00 и 23:30.");
+            return;
+        }
+
+        setErrorMessage(null);
+
+
+
         const orderData = {
-            user_id: '6766c10d6e2a8f4db12de570', // Замените на реальный ID пользователя
+            user_id: setUser,
             predicted_date: selectedDateTime.date,
             predicted_time: selectedDateTime.time,
             products: cart.map(item => ({
-                product_id: item._id, // Или другой идентификатор продукта
+                product_id: item._id,
                 quantity: item.quantity,
             })),
-            status: "pending", // Статус заказа по умолчанию
+            status: "pending",
         };
 
         try {
@@ -112,9 +207,21 @@ const Cart = () => {
         }
     };
 
+
     const getMinTime = () => {
         const now = new Date();
-        return now.toISOString().split("T")[1].substring(0, 5); // Get current time in HH:mm format
+        const minHours = now.getHours();
+        const minMinutes = now.getMinutes();
+        return `${minHours}:${minMinutes < 10 ? "0" + minMinutes : minMinutes}`;
+    };
+
+    const disableDates = (date: Date) => {
+        const currentDate = new Date();
+        const maxDate = new Date();
+        maxDate.setDate(currentDate.getDate() + 14); // 14 дней от сегодняшнего дня
+
+        // Проверка: нельзя выбрать даты до текущей или более чем через 14 дней
+        return date < currentDate || maxDate > date;
     };
 
     return (
@@ -178,19 +285,25 @@ const Cart = () => {
                 )}
             </div>
 
-            {/* Date Picker Modal */}
             {showDatePicker && (
                 <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
                     <div className="bg-white p-6 rounded-lg shadow-lg max-w-sm w-full">
                         <h2 className="text-xl font-bold mb-4 text-center">Выберите дату и время</h2>
-                        <input
-                            type="date"
-                            name="date"
-                            value={selectedDateTime.date}
-                            onChange={handleDateTimeChange}
-                            min={new Date().toISOString().split("T")[0]}
+                        <DatePicker
+                            selected={selectedDateTime.date ? new Date(selectedDateTime.date) : null}
+                            onChange={(date: Date | null) => setSelectedDateTime(prev => ({
+                                ...prev,
+                                date: date ? date.toISOString().split('T')[0] : ""
+                            }))}
+                            minDate={new Date()}
+                            maxDate={new Date(new Date().setDate(new Date().getDate() + 14))}
+                            filterDate={disableDates}
                             className="w-full border p-2 rounded-lg mb-4"
+                            dateFormat="yyyy-MM-dd"
+                            showMonthYearDropdown={true}  // Устанавливаем значение true для отображения выпадающего списка месяца и года
                         />
+
+
                         <input
                             type="time"
                             name="time"
@@ -199,6 +312,7 @@ const Cart = () => {
                             min={getMinTime()}
                             className="w-full border p-2 rounded-lg mb-4"
                         />
+                        {errorMessage && <p className="text-red-500 text-sm">{errorMessage}</p>}
                         <div className="flex justify-between">
                             <button
                                 className="bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600"

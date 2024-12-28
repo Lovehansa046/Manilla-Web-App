@@ -1,9 +1,8 @@
-// pages/index.js
 import React, {useEffect, useState} from 'react';
-import Image from 'next/image'
+import Image from 'next/image';
 
 interface Product {
-    _id?: string;  // Обязательное поле
+    _id?: string;
     name: string;
     description: string;
     price: number;
@@ -12,43 +11,44 @@ interface Product {
 }
 
 const Home = ({products}: { products: Product[] }) => {
-    const [cart, setCart] = useState<Product[]>([]); // Указываем тип массива
+    const [cart, setCart] = useState<Product[]>([]);
 
     useEffect(() => {
-        // Загрузка корзины из localStorage при монтировании компонента
         const savedCart = localStorage.getItem('cart');
         if (savedCart) {
-            // Если данные существуют в localStorage, парсим их
             setCart(JSON.parse(savedCart));
         }
     }, []);
 
-
     useEffect(() => {
-        // Сохранение корзины в localStorage при изменении состояния корзины
         if (cart.length > 0) {
             localStorage.setItem('cart', JSON.stringify(cart));
         }
     }, [cart]);
 
     const addToCart = (product: Product) => {
-        // Проверяем, есть ли уже этот товар в корзине
         const existingProduct = cart.find(item => item._id === product._id);
-        // остальной код
-
 
         if (existingProduct) {
-            // Если товар уже есть в корзине, увеличиваем его количество
             const updatedCart = cart.map(item =>
                 item._id === product._id ? {...item, quantity: item.quantity + 1} : item
             );
             setCart(updatedCart);
         } else {
-            // Если товара нет в корзине, добавляем его с количеством 1
             const updatedCart = [...cart, {...product, quantity: 1}];
             setCart(updatedCart);
         }
     };
+
+    const isValidUrl = (url: string) => {
+        try {
+            new URL(url);  // Пытаемся создать URL из строки
+            return true;
+        } catch {
+            return false;
+        }
+    };
+
 
     return (
         <>
@@ -58,8 +58,9 @@ const Home = ({products}: { products: Product[] }) => {
                         {products.map((product) => (
                             <div key={product._id} className="product-card bg-white shadow-lg rounded-lg p-4">
                                 <Image
-                                    src='https://picsum.photos/id/237/200/300'
-                                    width={300} height={300}/*{product.image}*/
+                                    src={isValidUrl(product.image) ? product.image : 'https://picsum.photos/id/237/200/300'}
+                                    width={300}
+                                    height={300}
                                     alt={product.name}
                                     className="w-full h-40 object-cover rounded-lg mb-4"
                                 />
@@ -78,11 +79,7 @@ const Home = ({products}: { products: Product[] }) => {
                 </div>
             </div>
         </>
-
     );
 };
-
-// Функция для получения данных с API при серверном рендеринге
-// s
 
 export default Home;

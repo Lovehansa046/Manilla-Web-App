@@ -32,6 +32,7 @@ export default function Login() {
             if (response.ok) {
                 // Сохраняем token в localStorage
                 localStorage.setItem("token", data.token);
+                localStorage.setItem("user_id_token", JSON.stringify(data.user_id));
 
                 // Сохраняем role_id в localStorage
                 if (data.role_id) {

@@ -1,101 +1,130 @@
-import React, {useEffect, useRef, useState} from "react";
-import Image from 'next/image'
-import Link from "next/link";
+'use client';
 
-interface ProfileDropDownProps {
-    // Укажите свойства, которые ожидаются в props
-    userName: string; // Пример: имя пользователя
-}
+import React, {useState} from 'react';
+import Link from 'next/link';
 
 
-interface ProfileDropDownProps {
-    class?: string; // class может быть строкой или отсутствовать
-}
-
-const ProfileDropDown: React.FC<ProfileDropDownProps> = (props) => {
-    const [state, setState] = useState(false);
-    const profileRef = useRef<HTMLButtonElement | null>(null); // Изменен тип на HTMLButtonElement
-
-
+export default function Navbar() {
+    const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
     async function logout() {
-        const response = await fetch('/api/auth/logout', {
-            method: 'POST',  // Используем POST-запрос
-        })
-        const data = await response.json()
-        console.log(data.message)  // Выводим сообщение
-    }
+        try {
+            const response = await fetch('/api/auth/logout', {
+                method: 'POST',  // Используем POST-запрос
+            });
 
+            if (response.ok) {
+                const data = await response.json();
+                console.log(data.message); // Выводим сообщение
 
-    const navigation = [
-        // {title: "Dashboard", path: "/account"},
-        // {title: "Settings", path: "/account/settings/"},
-        {title: "Log out", path: "/login"},
-    ];
+                // Очистка localStorage
+                localStorage.removeItem('token'); // Удаляем токен
+                localStorage.clear(); // Полная очистка, если необходимо
 
-
-    useEffect(() => {
-        const handleDropDown = (e: MouseEvent) => {
-            // Теперь TypeScript знает, что profileRef.current имеет метод contains
-            if (profileRef.current && !profileRef.current.contains(e.target as Node)) {
-                setState(false);
+                // Перенаправление на главную страницу
+                window.location.href = '/';
+            } else {
+                console.error('Ошибка при выходе:', response.status);
             }
-        };
-        document.addEventListener('click', handleDropDown);
-
-        // Cleanup event listener on component unmount
-        return () => {
-            document.removeEventListener('click', handleDropDown);
-        };
-    }, []);
-
+        } catch (error) {
+            console.error('Ошибка:', error);
+        }
+    }
     return (
-        <div className={`relative ${props.class}`}>
-            <div className="flex items-center space-x-4">
-                <button ref={profileRef}
-                        className="w-10 h-10 outline-none rounded-full ring-offset-2 ring-gray-200 ring-2 lg:hover:ring-red-700 lg:focus:ring-red-600"
-                        onClick={() => setState(!state)}
-                >
-                    <Image
-                        src="https://randomuser.me/api/portraits/men/46.jpg"
-                        width={300}
-                        height={300}
-                        className="w-full h-full rounded-full"
-                        alt=''
-                    />
-                </button>
-                <div className="lg:hidden">
-                    <span className="block">Micheal John</span>
-                    <span className="block text-sm text-gray-500">john@gmail.com</span>
+        <nav className="bg-gray-900 text-white">
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div className="flex justify-between h-16 items-center">
+                    {/* Логотип */}
+                    <div className="flex-shrink-0">
+                        <Link href="/admin/dashboard" className="text-2xl font-bold hover:text-gray-300">
+                            AdminPanel
+                        </Link>
+                    </div>
+
+                    {/* Основные ссылки */}
+                    <div className="hidden md:flex space-x-4">
+                        <Link href="/admin/dashboard" className="hover:text-gray-300">
+                            Dashboard
+                        </Link>
+                        <Link href="/admin/users" className="hover:text-gray-300">
+                            Пользователи
+                        </Link>
+                        <Link href="/admin/settings" className="hover:text-gray-300">
+                            Настройки
+                        </Link>
+                        <Link href={'/login'}>
+                            <button
+                                onClick={logout}
+                                className="bg-red-600 justify-center items-center w-full text-left text-white lg:hover:bg-red-800 lg:p-3 rounded"
+                            >
+                                logout
+                            </button>
+                        </Link>
+                    </div>
+
+                    {/* Кнопка для мобильного меню */}
+                    <div className="md:hidden">
+                        <button
+                            className="p-2 rounded-md focus:outline-none focus:ring-2 focus:ring-white"
+                            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+                        >
+                            <span className="sr-only">Открыть меню</span>
+                            {isMobileMenuOpen ? (
+                                <svg
+                                    className="h-6 w-6"
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    fill="none"
+                                    viewBox="0 0 24 24"
+                                    stroke="currentColor"
+                                    aria-hidden="true"
+                                >
+                                    <path
+                                        strokeLinecap="round"
+                                        strokeLinejoin="round"
+                                        strokeWidth="2"
+                                        d="M6 18L18 6M6 6l12 12"
+                                    />
+                                </svg>
+                            ) : (
+                                <svg
+                                    className="h-6 w-6"
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    fill="none"
+                                    viewBox="0 0 24 24"
+                                    stroke="currentColor"
+                                    aria-hidden="true"
+                                >
+                                    <path
+                                        strokeLinecap="round"
+                                        strokeLinejoin="round"
+                                        strokeWidth="2"
+                                        d="M4 6h16M4 12h16m-7 6h7"
+                                    />
+                                </svg>
+                            )}
+                        </button>
+                    </div>
                 </div>
             </div>
-            <ul className={`bg-white top-12 right-0 mt-5 space-y-5 lg:absolute lg:border lg:rounded-md lg:text-sm lg:w-52 lg:shadow-md lg:space-y-0 lg:mt-0 ${state ? '' : 'lg:hidden'}`}>
-                {
-                    navigation.map((item) => (
-                        <li key={item.title}>
-                            {item.title === 'Log out' ? (
-                                // Заменяем ссылку на кнопку для "Log out"
-                                <a href={item.path}>
-                                    <button
-                                        onClick={logout}
-                                        className="bg-red-600 justify-center items-center w-full text-left text-white lg:hover:bg-red-800 lg:p-3 rounded"
-                                    >
-                                        {item.title}
-                                    </button>
-                                </a>
 
-
-                            ) : (
-                                // Для других ссылок оставляем обычные ссылки
-                                <Link className="block text-gray-600 lg:hover:bg-gray-50 lg:p-2.5" href={item.path}>
-                                    {item.title}
-                                </Link>
-                            )}
-                        </li>
-                    ))
-                }
-            </ul>
-        </div>
+            {/* Мобильное меню */}
+            {isMobileMenuOpen && (
+                <div className="md:hidden">
+                    <div className="space-y-1 px-2 pt-2 pb-3">
+                        <Link href="/admin/dashboard"
+                              className="block px-3 py-2 rounded-md text-base font-medium hover:bg-gray-700">
+                            Dashboard
+                        </Link>
+                        <Link href="/admin/users"
+                              className="block px-3 py-2 rounded-md text-base font-medium hover:bg-gray-700">
+                            Пользователи
+                        </Link>
+                        <Link href="/admin/settings"
+                              className="block px-3 py-2 rounded-md text-base font-medium hover:bg-gray-700">
+                            Настройки
+                        </Link>
+                    </div>
+                </div>
+            )}
+        </nav>
     );
 }
-
-export default ProfileDropDown;

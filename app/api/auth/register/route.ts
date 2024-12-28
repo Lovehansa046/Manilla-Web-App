@@ -1,68 +1,79 @@
-import {NextResponse} from 'next/server';
-import bcrypt from 'bcrypt';
-import jwt from 'jsonwebtoken';
-import dotenv from 'dotenv';
 import {getConnection} from '@/backend/dbConnection/dbConnection';
+import bcrypt from 'bcrypt';
+import dotenv from 'dotenv';
+import {ObjectId} from 'mongodb'; // Импорт ObjectId
 
 dotenv.config();
 
 const JWT_SECRET = process.env.JWT_SECRET;
+const FIXED_ROLE_ID = '676823d21e6062779cfd474e'; // Перманентный ID роли
+
+if (!JWT_SECRET) {
+    throw new Error('JWT_SECRET не задан в переменных окружения');
+}
 
 export async function POST(req: Request) {
+    const {FirstName, LastName, Email, Password} = await req.json();
+
+    if (!FirstName || !LastName || !Email || !Password) {
+        return new Response(
+            JSON.stringify({message: 'Необходимо указать все обязательные поля'}),
+            {status: 400}
+        );
+    }
+
     try {
-        const {Email, Password} = await req.json();
-
-        if (!Email || !Password) {
-            return NextResponse.json({message: 'Необходимо указать email и пароль'}, {status: 400});
-        }
-
+        // Проверка, существует ли уже пользователь с таким email
         const {db, client} = await getConnection();
-        const user = await db.collection('User').findOne({Email});
+        const usersCollection = db.collection('User');
+        const existingUser = await usersCollection.findOne({Email});
 
-        if (!user) {
-            return NextResponse.json({message: 'Пользователь не найден'}, {status: 400});
+        if (existingUser) {
+            await client.close();
+            return new Response(
+                JSON.stringify({message: 'Пользователь с таким email уже существует'}),
+                {status: 400}
+            );
         }
 
-        const isPasswordValid = await bcrypt.compare(Password, user.Password);
+        // Хешируем пароль перед сохранением
+        const hashedPassword = await bcrypt.hash(Password, 10);
 
-        if (!isPasswordValid) {
-            return NextResponse.json({message: 'Неверный пароль'}, {status: 400});
+        // Проверка существования роли по фиксированному ID
+        const rolesCollection = db.collection('Role');
+        const role = await rolesCollection.findOne({_id: new ObjectId(FIXED_ROLE_ID)});
+
+        if (!role) {
+            await client.close();
+            return new Response(
+                JSON.stringify({message: 'Роль с заданным ID не найдена'}),
+                {status: 500}
+            );
         }
 
-        if (!JWT_SECRET) {
-            throw new Error('JWT_SECRET не задан в переменных окружения');
-        }
+        // Добавляем нового пользователя с привязкой к роли
+        const result = await usersCollection.insertOne({
+            FirstName,
+            LastName,
+            Email,
+            Password: hashedPassword,
+            image: "http://dummyimage.com/150x150.jpg/99cccc",
+            role_id: role._id, // Ссылка на роль
+            createdAt: new Date(),
+        });
 
-        const token = jwt.sign(
-            {userId: user._id, email: user.Email, role_id: user.role_id},
-            JWT_SECRET,
-            {expiresIn: '1h'}
+        // Закрываем подключение
+        await client.close();
+
+        return new Response(
+            JSON.stringify({message: 'Пользователь успешно создан', userId: result.insertedId}),
+            {status: 201}
         );
-
-        const tokenExpiresAt = new Date(Date.now() + 3600 * 1000); // Токен истекает через 1 час
-
-        await db.collection('User').updateOne(
-            {_id: user._id},
-            {$set: {token, tokenExpiresAt}}
-        );
-
-        // Установка токена в cookie
-        const response = NextResponse.json({
-            message: 'Авторизация успешна',
-            token,
-            expiresAt: tokenExpiresAt
-        }, {status: 200});
-        response.headers.set('Set-Cookie', `token=${token}; HttpOnly; Path=/; Max-Age=3600; Secure`);
-
-        return response;
-
     } catch (error) {
-        if (error instanceof Error) {
-            console.error('Ошибка при авторизации:', error.message);
-            return NextResponse.json({message: 'Ошибка при авторизации', error: error.message}, {status: 500});
-        } else {
-            console.error('Неизвестная ошибка:', error);
-            return NextResponse.json({message: 'Неизвестная ошибка', error: String(error)}, {status: 500});
-        }
+        console.error('Ошибка при добавлении пользователя:', error);
+        return new Response(
+            JSON.stringify({message: 'Ошибка при добавлении пользователя', error: String(error)}),
+            {status: 500}
+        );
     }
 }

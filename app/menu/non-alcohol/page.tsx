@@ -11,7 +11,7 @@ export default function NonAlcoholPage() {
 
     // Функция для загрузки продуктов
     const fetchProducts = async () => {
-        const response = await fetch("/api/products?type_product=1"); // Пример фильтрации по типу
+        const response = await fetch("/api/products?type_product=676ff0d7b9d06b03ed1af1bb"); // Пример фильтрации по типу
         const data = await response.json();
         setProducts(data.products);
     };

@@ -43,6 +43,7 @@ export default function UsersPage() {
                     setError(errorData.message || 'Не удалось загрузить пользователей');
                 }
             } catch (error) {
+                console.error(error);
                 setError('Ошибка при загрузке пользователей');
             } finally {
                 setLoading(false);
@@ -62,39 +63,47 @@ export default function UsersPage() {
 
     return (
         <>
-            <Navbar userName={''}></Navbar>
+            <Navbar></Navbar>
             <div className="p-4">
-                <h1 className="text-2xl font-bold mb-4">Список пользователей</h1>
+                <h1 className="text-3xl font-semibold text-center text-gray-900 mb-6">Список пользователей</h1>
                 {users.length > 0 ? (
-                    <table className="w-full border-collapse border border-gray-200">
-                        <thead>
-                        <tr>
-                            <th className="border border-gray-300 p-2">ID</th>
-                            <th className="border border-gray-300 p-2">Имя</th>
-                            <th className="border border-gray-300 p-2">Фамилия</th>
-                            <th className="border border-gray-300 p-2">Email</th>
-                            <th className="border border-gray-300 p-2">Роль</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-
-                        {users.map((user) => (
-                            <tr key={user._id}>
-                                <td className="border border-gray-300 p-2">{user._id}</td>
-                                <td className="border border-gray-300 p-2">{user.FirstName}</td>
-                                <td className="border border-gray-300 p-2">{user.LastName}</td>
-                                <td className="border border-gray-300 p-2">{user.Email}</td>
-                                <td className="border border-gray-300 p-2">
-                                    {user.role_id === '6768119b5157a6cf573ca551' ? 'Администратор' : 'Клиент'}
-                                </td>
+                    <div className="overflow-x-auto bg-white shadow-lg rounded-lg">
+                        <table className="w-full table-auto text-sm text-gray-700">
+                            <thead className="bg-gray-200 text-gray-600">
+                            <tr>
+                                <th className="px-6 py-3 text-left">ID</th>
+                                <th className="px-6 py-3 text-left">Имя</th>
+                                <th className="px-6 py-3 text-left">Фамилия</th>
+                                <th className="px-6 py-3 text-left">Email</th>
+                                <th className="px-6 py-3 text-left">Роль</th>
                             </tr>
-                        ))}
-                        </tbody>
-                    </table>
+                            </thead>
+                            <tbody>
+                            {users.map((user, index) => (
+                                <tr
+                                    key={user._id}
+                                    className={`${
+                                        index % 2 === 0 ? 'bg-gray-50' : 'bg-gray-100'
+                                    } hover:bg-gray-200 transition-colors duration-300 cursor-pointer`}
+                                    onClick={() => router.push(`/admin/users/${user._id}`)} // Перенаправление на страницу пользователя
+                                >
+                                    <td className="px-6 py-4">{user._id}</td>
+                                    <td className="px-6 py-4">{user.FirstName}</td>
+                                    <td className="px-6 py-4">{user.LastName}</td>
+                                    <td className="px-6 py-4">{user.Email}</td>
+                                    <td className="px-6 py-4">
+                                        {user.role_id === '6768119b5157a6cf573ca551' ? 'Администратор' : 'Клиент'}
+                                    </td>
+                                </tr>
+                            ))}
+                            </tbody>
+                        </table>
+                    </div>
                 ) : (
-                    <div className="text-center">Пользователи не найдены</div>
+                    <div className="text-center text-gray-500 mt-6">Пользователи не найдены</div>
                 )}
             </div>
+
         </>
     );
 }

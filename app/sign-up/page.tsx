@@ -11,7 +11,7 @@ export default function SignUp() {
         Email: '',
         Password: '',
         image: '', // если необходимо, можно добавить обработку изображений
-        role_id: 1, // или подставить роль по умолчанию
+        role_id: '676823d21e6062779cfd474e', // или подставить роль по умолчанию
     });
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
