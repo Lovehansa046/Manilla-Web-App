@@ -3,9 +3,10 @@
 import React, {ChangeEvent, useEffect, useState} from 'react';
 import Navbar from "@/app/components/Navbar";
 import Footer from "@/app/components/Footer";
-import Image from 'next/image'
+import Image from 'next/image';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
+import {PayPalButtons} from "@paypal/react-paypal-js";
 
 interface CartItem {
     _id: string;
@@ -23,9 +24,11 @@ const Cart = () => {
         time: "",
     });
     const [errorMessage, setErrorMessage] = useState<string | null>(null);
+    const [, setPaymentSuccess] = useState(false); // Состояние для отслеживания успешности платежа
     const [, setUser] = useState(null);
     const [, setLoading] = useState(true);
     const [, setError] = useState<string>('');
+    const [showPaymentModal, setShowPaymentModal] = useState(false); // Состояние для отображения модального окна оплаты
 
     useEffect(() => {
         const savedCart = localStorage.getItem('cart');
@@ -35,7 +38,6 @@ const Cart = () => {
     }, []);
 
     useEffect(() => {
-        // Проверка, что код выполняется в браузере
         if (typeof window !== 'undefined') {
             const userId = localStorage.getItem('user_id_token');
 
@@ -47,21 +49,19 @@ const Cart = () => {
 
             const fetchUserData = async () => {
                 try {
-                    // Запрос данных пользователя из базы данных
                     const response = await fetch(`/api/users/${userId}`);
 
                     if (response.ok) {
                         const data = await response.json();
-                        const userFromDb = data.user_id;  // Данные из базы данных
+                        const userFromDb = data.user_id;
 
                         if (userId !== userFromDb) {
-                            // Если ID из localStorage не совпадает с ID из базы данных, выполняем нужные действия
                             setError('ID пользователя не совпадает с данным в базе данных');
                             setLoading(false);
                             return;
                         }
 
-                        setUser(userFromDb);  // Устанавливаем данные пользователя, если совпадают
+                        setUser(userFromDb);
                     } else {
                         setError('Пользователь не найден в базе данных');
                     }
@@ -75,7 +75,7 @@ const Cart = () => {
 
             fetchUserData();
         }
-    }, []); // Пустой массив зависимостей, чтобы код выполнялся только при монтировании компонента
+    }, []);
 
     useEffect(() => {
         if (cart.length > 0) {
@@ -101,9 +101,9 @@ const Cart = () => {
         }
     };
 
-    const handleRemoveCart = () => {
-        localStorage.removeItem('cart');
-    };
+    // const handleRemoveCart = () => {
+    //     localStorage.removeItem('cart');
+    // };
 
     const totalPrice = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
 
@@ -122,19 +122,8 @@ const Cart = () => {
             [name]: value,
         }));
     };
-    // const userId = localStorage.getItem('user_id_token');
-    //
-    // if (userId != user_db) {
-    //
-    //
-    //     ...userId
-    //     const user_id = ;
-    //     return user_id;
-    // }
 
-
-
-    const handleSaveDateTime = async () => {
+    const handleSaveDateTime = () => {
         const currentDate = new Date();
         const selectedDate = new Date(selectedDateTime.date);
         const selectedTime = selectedDateTime.time ? new Date(`${selectedDateTime.date}T${selectedDateTime.time}:00`) : null;
@@ -143,7 +132,6 @@ const Cart = () => {
         const maxDate = new Date();
         maxDate.setDate(currentDate.getDate() + 14); // максимум через 14 дней
 
-        // Проверка времени: нельзя заказать до 10:00 и после 11:30
         const minAllowedTime = new Date(selectedDate);
         minAllowedTime.setHours(10, 0, 0, 0); // 10:00
         const maxAllowedTime = new Date(selectedDate);
@@ -154,7 +142,6 @@ const Cart = () => {
             return;
         }
 
-        // Проверка: время не раньше чем через 30 минут
         if (selectedTime && selectedTime < minTime) {
             setErrorMessage("Выберите время не раньше чем через 30 минут.");
             return;
@@ -172,7 +159,12 @@ const Cart = () => {
 
         setErrorMessage(null);
 
+        setShowPaymentModal(true); // Показать модальное окно для оплаты
+    };
 
+    const handlePaymentSuccess = async () => {
+        setPaymentSuccess(true);
+        setErrorMessage(null); // Сбрасываем ошибку, если платеж прошел успешно
 
         const orderData = {
             user_id: setUser,
@@ -198,30 +190,16 @@ const Cart = () => {
             if (response.status === 201) {
                 alert(`Заказ успешно создан! ID: ${data.orderId}`);
                 setCart([]); // Очищаем корзину после отправки заказа
+                localStorage.removeItem('cart'); // Удаляем корзину из localStorage
             } else {
                 alert(`Ошибка: ${data.message}`);
             }
         } catch (error) {
             console.error('Ошибка при отправке заказа:', error);
             alert('Ошибка при отправке заказа');
+        } finally {
+            setShowPaymentModal(false); // Скрыть модальное окно оплаты
         }
-    };
-
-
-    const getMinTime = () => {
-        const now = new Date();
-        const minHours = now.getHours();
-        const minMinutes = now.getMinutes();
-        return `${minHours}:${minMinutes < 10 ? "0" + minMinutes : minMinutes}`;
-    };
-
-    const disableDates = (date: Date) => {
-        const currentDate = new Date();
-        const maxDate = new Date();
-        maxDate.setDate(currentDate.getDate() + 14); // 14 дней от сегодняшнего дня
-
-        // Проверка: нельзя выбрать даты до текущей или более чем через 14 дней
-        return date < currentDate || maxDate > date;
     };
 
     return (
@@ -236,8 +214,13 @@ const Cart = () => {
                         {cart.map((item) => (
                             <div key={item._id}
                                  className="flex items-center justify-between bg-white shadow-lg rounded-lg p-4">
-                                <Image src='https://picsum.photos/id/237/200/300' alt={item.name} width={20} height={20}
-                                       className="w-20 h-20 object-cover rounded-lg"/>
+                                <Image
+                                    src='https://picsum.photos/id/237/200/300'
+                                    alt={item.name}
+                                    width={20}
+                                    height={20}
+                                    className="w-20 h-20 object-cover rounded-lg"
+                                />
                                 <div className="flex-1 ml-4">
                                     <h2 className="text-lg font-semibold text-gray-800">{item.name}</h2>
                                     <p className="text-sm text-gray-600">{item.description}</p>
@@ -276,64 +259,84 @@ const Cart = () => {
                 {cart.length > 0 && (
                     <div className="mt-6 p-4 rounded-lg flex justify-center">
                         <button
-                            className="bg-green-500 text-white px-8 py-4 rounded-lg hover:bg-green-600"
+                            className="bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600"
                             onClick={handleOpenDatePicker}
                         >
-                            Оформить заказ
+                            Выберите время
                         </button>
                     </div>
                 )}
-            </div>
+                {showDatePicker && (
+                    <div className="mt-4 p-4 rounded-lg bg-white shadow-lg">
+                        <h2 className="text-xl font-semibold mb-4">Выберите дату и время:</h2>
+                        <div>
+                            <DatePicker
+                                selected={selectedDateTime.date ? new Date(selectedDateTime.date) : null}
+                                onChange={(date: Date | null) => setSelectedDateTime(prev => ({
+                                    ...prev,
+                                    date: date ? date.toISOString().split('T')[0] : ""
+                                }))}
 
-            {showDatePicker && (
-                <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-                    <div className="bg-white p-6 rounded-lg shadow-lg max-w-sm w-full">
-                        <h2 className="text-xl font-bold mb-4 text-center">Выберите дату и время</h2>
-                        <DatePicker
-                            selected={selectedDateTime.date ? new Date(selectedDateTime.date) : null}
-                            onChange={(date: Date | null) => setSelectedDateTime(prev => ({
-                                ...prev,
-                                date: date ? date.toISOString().split('T')[0] : ""
-                            }))}
-                            minDate={new Date()}
-                            maxDate={new Date(new Date().setDate(new Date().getDate() + 14))}
-                            filterDate={disableDates}
-                            className="w-full border p-2 rounded-lg mb-4"
-                            dateFormat="yyyy-MM-dd"
-                            showMonthYearDropdown={true}  // Устанавливаем значение true для отображения выпадающего списка месяца и года
-                        />
-
-
-                        <input
-                            type="time"
-                            name="time"
-                            value={selectedDateTime.time}
-                            onChange={handleDateTimeChange}
-                            min={getMinTime()}
-                            className="w-full border p-2 rounded-lg mb-4"
-                        />
-                        {errorMessage && <p className="text-red-500 text-sm">{errorMessage}</p>}
-                        <div className="flex justify-between">
+                                dateFormat="yyyy-MM-dd"
+                                minDate={new Date()}
+                                maxDate={new Date(new Date().setDate(new Date().getDate() + 14))}
+                                className="p-2 border border-gray-300 rounded-lg w-full mb-4"
+                                showMonthYearDropdown={true}
+                            />
+                            <input
+                                type="time"
+                                name="time"
+                                value={selectedDateTime.time}
+                                onChange={handleDateTimeChange}
+                                className="p-2 border border-gray-300 rounded-lg w-full mb-4"
+                            />
+                        </div>
+                        {errorMessage && <div className="text-red-500 text-sm">{errorMessage}</div>}
+                        <div className="mt-4 flex justify-center gap-4">
                             <button
-                                className="bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600"
-                                onClick={() => {
-                                    handleSaveDateTime();
-                                    handleRemoveCart();
-                                }}
+                                onClick={handleSaveDateTime}
+                                className="bg-blue-500 text-white px-6 py-2 rounded-lg hover:bg-blue-600"
                             >
                                 Сохранить
                             </button>
                             <button
-                                className="bg-gray-300 text-black px-4 py-2 rounded-lg hover:bg-gray-400"
                                 onClick={handleCloseDatePicker}
+                                className="bg-gray-300 text-black px-6 py-2 rounded-lg hover:bg-gray-400"
                             >
-                                Отмена
+                                Закрыть
                             </button>
                         </div>
                     </div>
-                </div>
-            )}
-
+                )}
+                {showPaymentModal && (
+                    <div className="mt-6 p-4">
+                        <PayPalButtons
+                            createOrder={(data, actions) => {
+                                if (!actions?.order) throw new Error("Order actions undefined");
+                                return actions.order.create({
+                                    intent: "CAPTURE",
+                                    purchase_units: [
+                                        {
+                                            amount: {
+                                                currency_code: "EUR",
+                                                value: totalPrice.toString(),
+                                            },
+                                        },
+                                    ],
+                                });
+                            }}
+                            onApprove={(data, actions) => {
+                                if (!actions?.order) throw new Error("Order actions undefined");
+                                return actions.order.capture().then((details) => {
+                                    const name = details?.payer?.name?.given_name || "Клиент";
+                                    alert(`Платеж выполнен: ${name}`);
+                                    handlePaymentSuccess()
+                                });
+                            }}
+                        />
+                    </div>
+                )}
+            </div>
             <Footer/>
         </>
     );

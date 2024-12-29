@@ -1,0 +1,23 @@
+ <PayPalButtons
+                    createOrder={(data, actions) => {
+                        if (!actions?.order) throw new Error("Order actions undefined");
+                        return actions.order.create({
+                            intent: "CAPTURE",
+                            purchase_units: [
+                                {
+                                    amount: {
+                                        currency_code: "EUR", // Указываем валюту
+                                        value: totalPrice.toString(), // Сумма к оплате
+                                    },
+                                },
+                            ],
+                        });
+                    }}
+                    onApprove={(data, actions) => {
+                        if (!actions?.order) throw new Error("Order actions undefined");
+                        return actions.order.capture().then((details) => {
+                            const name = details?.payer?.name?.given_name || "Клиент";
+                            alert(`Платеж выполнен: ${name}`);
+                        });
+                    }}
+                />
