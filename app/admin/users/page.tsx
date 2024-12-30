@@ -64,7 +64,9 @@ export default function UsersPage() {
     return (
         <>
             <Navbar></Navbar>
+
             <div className="p-4">
+
                 <h1 className="text-3xl font-semibold text-center text-gray-900 mb-6">Список пользователей</h1>
                 {users.length > 0 ? (
                     <div className="overflow-x-auto bg-white shadow-lg rounded-lg">

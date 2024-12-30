@@ -100,7 +100,7 @@ export async function middleware(req: any) {
                 // Администратору доступны только страницы /admin/:path*
                 if (!url.pathname.startsWith('/admin')) {
                     console.log("Admin tried to access a non-admin page, redirecting to /admin");
-                    return NextResponse.redirect(new URL('/admin/users', req.url));
+                    return NextResponse.redirect(new URL('/admin/dashboard', req.url));
                 }
             } else if (roleId !== adminRoleId) {
                 console.log("Role is user, checking page access");

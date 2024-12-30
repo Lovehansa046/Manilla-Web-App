@@ -113,6 +113,12 @@ export default function UserDetails() {
             <div
                 className="min-h-screen bg-gradient-to-r from-[#1c1c1c] via-[#2d2d2d] to-[#3a3a3a] flex items-center justify-center">
                 <div className="bg-white rounded-xl shadow-2xl max-w-4xl w-full p-12">
+                    <button
+                        onClick={() => router.back()}
+                        className="bg-gray-800 text-white hover:bg-gray-700 px-6 py-2 rounded-md mb-6 transition duration-300"
+                    >
+                        Вернуться назад
+                    </button>
                     <h1 className="text-5xl font-extrabold mb-8 tracking-tight text-center text-[#333]">Данные
                         пользователя</h1>
                     <div className="text-center mb-6">
