@@ -2,6 +2,26 @@
 import {getConnection} from "@/backend/dbConnection/dbConnection";
 import {NextResponse} from "next/server";
 
+
+/**
+ * @swagger
+ * tags:
+ *   - name: Users
+ *     description: Operations related to users
+ */
+
+/**
+ * @swagger
+ * /api/admin/users:
+ *   get:
+ *     tags:
+ *       - Users
+ *     description: Returns a list of users
+ *     responses:
+ *       200:
+ *         description: A list of users
+ */
+
 // import {authenticateAdmin} from "../../middleware/authMiddleware";
 
 export async function GET(req: Request) {

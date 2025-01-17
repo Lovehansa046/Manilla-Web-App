@@ -58,3 +58,5 @@ paths:
                   message:
                     type: string
                     example: "Ошибка при добавлении типа продукта"
+
+

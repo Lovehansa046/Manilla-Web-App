@@ -1,11 +1,19 @@
-// /app/api/product-types/route.ts
 import {getConnection} from "@/backend/dbConnection/dbConnection";
 import {NextResponse} from "next/server";
 
 /**
  * @swagger
- * /api/product-types:
+ * tags:
+ *   - name: Products-type
+ *     description: Операции с типами продуктов
+ */
+
+/**
+ * @swagger
+ * /api/admin/product-types:
  *   post:
+ *     tags:
+ *       - Products-type
  *     description: Добавить новый тип продукта
  *     requestBody:
  *       required: true
@@ -13,11 +21,15 @@ import {NextResponse} from "next/server";
  *         application/json:
  *           schema:
  *             type: object
+ *             required:
+ *               - name
  *             properties:
  *               name:
  *                 type: string
+ *                 description: Название типа продукта
  *               description:
  *                 type: string
+ *                 description: Описание типа продукта
  *     responses:
  *       201:
  *         description: Тип продукта успешно создан
@@ -26,6 +38,8 @@ import {NextResponse} from "next/server";
  *       500:
  *         description: Ошибка при добавлении типа продукта
  *   get:
+ *     tags:
+ *       - Products-type
  *     description: Получить список всех типов продуктов
  *     responses:
  *       200:
@@ -38,11 +52,14 @@ import {NextResponse} from "next/server";
  *                 type: object
  *                 properties:
  *                   id:
- *                     type: integer
+ *                     type: string
+ *                     description: Идентификатор типа продукта
  *                   name:
  *                     type: string
+ *                     description: Название типа продукта
  *                   description:
  *                     type: string
+ *                     description: Описание типа продукта
  *       500:
  *         description: Ошибка при получении типов продуктов
  */
@@ -57,7 +74,7 @@ export async function POST(req: Request) {
     }
 
     try {
-        const {db, client} = await getConnection();  // Получаем db и client
+        const {db, client} = await getConnection(); // Получаем db и client
 
         // Запрос для добавления нового типа продукта
         const productType = {name, description: description || null};
@@ -79,7 +96,7 @@ export async function POST(req: Request) {
 // GET: Получить список всех типов продуктов
 export async function GET() {
     try {
-        const {db, client} = await getConnection();  // Получаем db и client
+        const {db, client} = await getConnection(); // Получаем db и client
 
         // Запрос для получения всех типов продуктов
         const result = await db.collection('Product_type').find().toArray();

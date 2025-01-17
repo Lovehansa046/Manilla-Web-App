@@ -1,12 +1,14 @@
 'use client'
 
-import React, {ChangeEvent, useEffect, useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import Navbar from "@/app/components/Navbar";
 import Footer from "@/app/components/Footer";
 import Image from 'next/image';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import {PayPalButtons} from "@paypal/react-paypal-js";
+import TimePicker from "react-time-picker";
+
 
 interface CartItem {
     _id: string;
@@ -115,13 +117,13 @@ const Cart = () => {
         setShowDatePicker(false);
     };
 
-    const handleDateTimeChange = (e: ChangeEvent<HTMLInputElement>) => {
-        const {name, value} = e.target;
-        setSelectedDateTime((prev) => ({
-            ...prev,
-            [name]: value,
-        }));
-    };
+    // const handleDateTimeChange = (e: ChangeEvent<HTMLInputElement>) => {
+    //     const {name, value} = e.target;
+    //     setSelectedDateTime((prev) => ({
+    //         ...prev,
+    //         [name]: value,
+    //     }));
+    // };
 
     const handleSaveDateTime = () => {
         const currentDate = new Date();
@@ -283,13 +285,27 @@ const Cart = () => {
                                 className="p-2 border border-gray-300 rounded-lg w-full mb-4"
                                 showMonthYearDropdown={true}
                             />
-                            <input
-                                type="time"
-                                name="time"
+                            <TimePicker
+                                onChange={(time: string | null) => setSelectedDateTime({
+                                    ...selectedDateTime,
+                                    time: time || "10:00"  // Обработка null, если время не выбрано
+                                })}
                                 value={selectedDateTime.time}
-                                onChange={handleDateTimeChange}
-                                className="p-2 border border-gray-300 rounded-lg w-full mb-4"
+                                disableClock={true}
+                                format="HH:mm"
+                                minTime="10:00"
+                                maxTime="23:30"
+                                className="p-3 border border-gray-300 rounded-lg w-full mb-4 text-lg text-gray-800 focus:ring-2 focus:ring-blue-500 focus:outline-none bg-white placeholder-gray-500 transition-all duration-200"
                             />
+
+
+                            {/*<input*/}
+                            {/*    type="time"*/}
+                            {/*    name="time"*/}
+                            {/*    value={selectedDateTime.time}*/}
+                            {/*    onChange={handleDateTimeChange}*/}
+                            {/*    */}
+                            {/*/>*/}
                         </div>
                         {errorMessage && <div className="text-red-500 text-sm">{errorMessage}</div>}
                         <div className="mt-4 flex justify-center gap-4">
@@ -337,6 +353,20 @@ const Cart = () => {
                     </div>
                 )}
             </div>
+            <TimePicker
+                onChange={(time: string | null) => setSelectedDateTime({
+                    ...selectedDateTime,
+                    time: time || "10:00"  // Обработка null, если время не выбрано
+                })}
+                value={selectedDateTime.time}
+                disableClock={true}
+                format="HH:mm"
+                minTime="10:00"
+                maxTime="23:30"
+                className="p-4 border-2 border-gray-300 rounded-lg w-full mb-4 text-4xl text-gray-800 focus:ring-2 focus:ring-blue-500 focus:outline-none bg-white placeholder-gray-500 transition-all duration-300"
+            />
+
+
             <Footer/>
         </>
     );

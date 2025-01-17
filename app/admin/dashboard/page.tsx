@@ -62,7 +62,7 @@ const Dashboard = () => {
                     </button>
 
                     <button
-                        onClick={() => handleNavigation('/admin/view-reports')}
+                        onClick={() => handleNavigation('/admin/analysis')}
                         className="p-6 bg-white rounded-lg shadow hover:shadow-lg hover:bg-gray-50 focus:ring-2 focus:ring-indigo-400"
                     >
                         <h2 className="text-lg font-bold text-gray-800">Просмотреть отчеты</h2>

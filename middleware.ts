@@ -1,43 +1,3 @@
-// import {NextResponse} from 'next/server';
-// import {authMiddleware} from './middleware/authMiddleware';
-// import {roleMiddleware} from './middleware/roleMiddleware';
-//
-// export async function middleware(req: any) {
-//     // Выполняем авторизацию
-//     const authResponse = await authMiddleware(req);
-//     if (authResponse) {
-//         return authResponse; // Если авторизация не прошла, возвращаем ошибку или редирект
-//     }
-//
-//     // Если авторизация прошла, сразу выполняем проверку роли
-//     const roleResponse = await roleMiddleware(req);
-//     if (roleResponse) {
-//         return roleResponse; // Если роль не подходит, перенаправляем пользователя
-//     }
-//
-//     return NextResponse.next(); // Если авторизация и роль прошли, продолжаем выполнение запроса
-// }
-//
-// export const config = {
-//     matcher: [
-//         // Страницы, доступные всем пользователям
-//         '/login',
-//         '/register',
-//
-//         // Страницы админов
-//         '/admin/:path*',
-//
-//         // Страницы для пользователей
-//         '/',
-//         '/home',
-//         '/menu/:path*',
-//         '/bucket',
-//         '/about',
-//         '/account/:path*',
-//     ],
-// };
-
-
 import {NextResponse} from 'next/server';
 
 export async function middleware(req: any) {
@@ -72,7 +32,26 @@ export async function middleware(req: any) {
 
             console.log("Token is valid:", data); // Логируем успешную верификацию
 
-            // Теперь проверяем роль по role_id
+            // Проверка блокировки пользователя (раньше, чем роль)
+            const isBlockedUser = await fetch(`${req.nextUrl.origin}/api/auth/checkUserBlocked`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Cookie': `token=${token}`,
+                },
+            });
+
+            const isBlockedData = await isBlockedUser.json();
+            console.log(isBlockedData)
+            const isBlocked = isBlockedData.isBlocked; // Предполагается, что `status` уже содержит boolean
+
+            // Если пользователь заблокирован, перенаправляем на страницу /blocked с кодом 403
+            if (isBlocked === true) {
+                console.log("User is blocked");
+                return NextResponse.redirect(new URL('/blocked', req.url)); // Страница с уведомлением о блокировке
+            }
+
+            // Проверка на роль будет выполняться только если пользователь не заблокирован
             const roleRes = await fetch(`${req.nextUrl.origin}/api/auth/checkRole`, {
                 method: 'POST',
                 headers: {
@@ -93,8 +72,8 @@ export async function middleware(req: any) {
 
             // Сопоставляем role_id с нужной ролью
             const adminRoleId = '6768119b5157a6cf573ca551'; // ID роли админа
-            // const userRoleId = '676823d21e6062779cfd474e';  // ID роли пользователя (если нужно)
 
+            // Проверяем доступ на основе роли
             if (roleId === adminRoleId) {
                 console.log("Role is admin, checking page access");
                 // Администратору доступны только страницы /admin/:path*
@@ -114,7 +93,6 @@ export async function middleware(req: any) {
                 return NextResponse.redirect(new URL('/login', req.url));
             }
         }
-
     } catch (error) {
         console.error("Error in middleware:", error);
         return NextResponse.redirect(new URL('/login', req.url));
@@ -142,4 +120,3 @@ export const config = {
         '/account/:path*',
     ],
 };
-

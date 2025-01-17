@@ -77,3 +77,16 @@ export async function POST(req: Request) {
         );
     }
 }
+
+
+/**
+ * @swagger
+ * /api/users:
+ *   post:
+ *     tags:
+ *       - Users
+ *     description: Returns a list of users
+ *     responses:
+ *       200:
+ *         description: A list of users
+ */

@@ -1,33 +1,12 @@
 import type {NextConfig} from 'next';
 
 const nextConfig: NextConfig = {
-    reactStrictMode: true,  // Рекомендуется для улучшения производительности
+    reactStrictMode: true,
     images: {
-        remotePatterns: [
-            {
-                protocol: 'https',
-                hostname: 'example.com',
-                pathname: '/**',
-            },
-            {
-                protocol: 'https',
-                hostname: 'randomuser.me',
-                pathname: '/**',
-            },
-            {
-                protocol: 'https',
-                hostname: 'picsum.photos',
-                pathname: '/**',
-            },
-            {
-                protocol: 'https',
-                hostname: '/**',  // Новый домен для изображений
-                pathname: '/**',
-            },
-        ],
+        unoptimized: true, // Разрешить загрузку изображений с любого домена
     },
     eslint: {
-        ignoreDuringBuilds: true,  // Игнорировать ошибки ESLint при сборке
+        ignoreDuringBuilds: true, // Игнорировать ошибки ESLint при сборке
     },
 };
 

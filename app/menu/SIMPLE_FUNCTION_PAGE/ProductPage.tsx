@@ -10,7 +10,7 @@ interface Product {
     quantity: number;
 }
 
-const Home = ({products}: { products: Product[] }) => {
+const Home = ({products = []}: { products?: Product[] }) => {  // Добавили значение по умолчанию
     const [cart, setCart] = useState<Product[]>([]);
 
     useEffect(() => {
@@ -42,25 +42,30 @@ const Home = ({products}: { products: Product[] }) => {
 
     const isValidUrl = (url: string) => {
         try {
-            new URL(url);  // Пытаемся создать URL из строки
+            new URL(url); // Пытаемся создать URL из строки
             return true;
         } catch {
             return false;
         }
     };
 
-
     return (
-        <>
-            <div className="max-w-7xl mx-auto mt-10 px-4 sm:px-6 lg:px-8">
+        <div className="max-w-7xl mx-auto mt-10 px-4 sm:px-6 lg:px-8">
+            {products.length === 0 ? (
+                <div className="flex items-center justify-center min-h-screen">
+                    <div className="bg-yellow-300 text-gray-800 p-6 rounded-lg shadow-lg text-center">
+                        <h2 className="text-2xl font-semibold">Товары данной категории ещё нет</h2>
+                    </div>
+                </div>
+            ) : (
                 <div className="product-grid">
                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                        {products.map((product) => (
-                            <div key={product._id} className="product-card bg-white shadow-lg rounded-lg p-4">
+                        {products.map((product, index) => (
+                            <div key={product._id || index} className="product-card bg-white shadow-lg rounded-lg p-4">
                                 <Image
                                     src={isValidUrl(product.image) ? product.image : 'https://picsum.photos/id/237/200/300'}
                                     width={300}
-                                    height={300}
+                                    height={600}
                                     alt={product.name}
                                     className="w-full h-40 object-cover rounded-lg mb-4"
                                 />
@@ -77,8 +82,8 @@ const Home = ({products}: { products: Product[] }) => {
                         ))}
                     </div>
                 </div>
-            </div>
-        </>
+            )}
+        </div>
     );
 };
 
