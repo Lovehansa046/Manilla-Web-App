@@ -204,6 +204,13 @@
     cursor: pointer;
 }
 
-.add-btn:hover {
-    background-color: #ea580c;
+.custom-time-picker .react-time-picker__inputGroup__input {
+    font-size: 2rem;
+    width: 50px !important;
 }
+
+.custom-time-picker {
+    font-size: 2rem;
+}
+
+

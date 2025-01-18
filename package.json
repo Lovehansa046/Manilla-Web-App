@@ -9,6 +9,11 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@emotion/react": "^11.14.0",
+    "@emotion/styled": "^11.14.0",
+    "@mui/lab": "^6.0.0-beta.23",
+    "@mui/material": "^6.4.0",
+    "@mui/x-date-pickers": "^7.24.0",
     "@paypal/checkout-server-sdk": "^1.0.3",
     "@paypal/react-paypal-js": "^8.7.0",
     "auth": "^1.2.3",
@@ -28,6 +33,7 @@
     "next-auth": "^4.24.11",
     "next-swagger-doc": "^0.4.1",
     "nookies": "^2.5.2",
+    "preact-compat": "^3.19.0",
     "react": "^18.2.0",
     "react-datepicker": "^7.5.0",
     "react-dom": "^18.2.0",

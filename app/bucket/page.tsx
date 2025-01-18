@@ -1,5 +1,4 @@
 'use client'
-
 import React, {useEffect, useState} from 'react';
 import Navbar from "@/app/components/Navbar";
 import Footer from "@/app/components/Footer";
@@ -295,17 +294,13 @@ const Cart = () => {
                                 format="HH:mm"
                                 minTime="10:00"
                                 maxTime="23:30"
-                                className="p-3 border border-gray-300 rounded-lg w-full mb-4 text-lg text-gray-800 focus:ring-2 focus:ring-blue-500 focus:outline-none bg-white placeholder-gray-500 transition-all duration-200"
+
+                                className="custom-time-picker p-3 border border-gray-300 rounded-lg w-full mb-4 text-lg text-gray-800 focus:ring-2 focus:ring-blue-500 focus:outline-none bg-white placeholder-gray-500 transition-all duration-200"
                             />
 
 
-                            {/*<input*/}
-                            {/*    type="time"*/}
-                            {/*    name="time"*/}
-                            {/*    value={selectedDateTime.time}*/}
-                            {/*    onChange={handleDateTimeChange}*/}
-                            {/*    */}
-                            {/*/>*/}
+
+
                         </div>
                         {errorMessage && <div className="text-red-500 text-sm">{errorMessage}</div>}
                         <div className="mt-4 flex justify-center gap-4">
@@ -353,18 +348,6 @@ const Cart = () => {
                     </div>
                 )}
             </div>
-            <TimePicker
-                onChange={(time: string | null) => setSelectedDateTime({
-                    ...selectedDateTime,
-                    time: time || "10:00"  // Обработка null, если время не выбрано
-                })}
-                value={selectedDateTime.time}
-                disableClock={true}
-                format="HH:mm"
-                minTime="10:00"
-                maxTime="23:30"
-                className="p-4 border-2 border-gray-300 rounded-lg w-full mb-4 text-4xl text-gray-800 focus:ring-2 focus:ring-blue-500 focus:outline-none bg-white placeholder-gray-500 transition-all duration-300"
-            />
 
 
             <Footer/>
