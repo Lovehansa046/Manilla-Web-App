@@ -72,6 +72,8 @@ export async function middleware(req: any) {
 
             // Сопоставляем role_id с нужной ролью
             const adminRoleId = '6768119b5157a6cf573ca551'; // ID роли админа
+            const sellerRoleId = '678d2743db8ce2c64437455e'; //ID роль продавца-повара (Klienditeenindaja)
+            const userRoleID = '676823d21e6062779cfd474e'; //ID роль клиента
 
             // Проверяем доступ на основе роли
             if (roleId === adminRoleId) {
@@ -81,12 +83,21 @@ export async function middleware(req: any) {
                     console.log("Admin tried to access a non-admin page, redirecting to /admin");
                     return NextResponse.redirect(new URL('/admin/dashboard', req.url));
                 }
-            } else if (roleId !== adminRoleId) {
+            } else if (roleId === userRoleID) {
                 console.log("Role is user, checking page access");
                 // Обычному пользователю запрещены страницы /admin/:path*
                 if (url.pathname.startsWith('/admin')) {
                     console.log("User tried to access an admin page, redirecting to /");
                     return NextResponse.redirect(new URL('/', req.url));
+                } else if (url.pathname.startsWith('/seller')) {
+                    console.log("User tried to access an seller page, redirecting to /");
+                    return NextResponse.redirect(new URL('/', req.url));
+                }
+            } else if (roleId === sellerRoleId) {
+                console.log("Role is seller, checking page access")
+                if (!url.pathname.startsWith('/seller')) {
+                    console.log("User tried to access an seller page, redirecting to /");
+                    return NextResponse.redirect(new URL('/seller/orders', req.url));
                 }
             } else {
                 console.log("Unknown role_id, redirecting to /login");
@@ -110,6 +121,7 @@ export const config = {
 
         // Страницы админов
         '/admin/:path*',
+        '/seller/:path*',
 
         // Страницы для пользователей
         '/',

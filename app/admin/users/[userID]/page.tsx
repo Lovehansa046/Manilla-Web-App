@@ -55,7 +55,7 @@ export default function UserDetails() {
                     setOrders(data.orders);
                     setFilteredOrders(data.orders);
                 } else {
-                    setError('У пользователя нет заказов или его роль администратора!');
+                    setError('У пользователя нет заказов или его роль администратор/продавец!');
                     setTimeout(() => {
                         router.push('/admin/users');  // Перенаправление на /admin/users через 10 секунд
                     }, 5000);

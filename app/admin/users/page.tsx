@@ -94,7 +94,7 @@ export default function UsersPage() {
                                     <td className="px-6 py-4">{user.LastName}</td>
                                     <td className="px-6 py-4">{user.Email}</td>
                                     <td className="px-6 py-4">
-                                        {user.role_id === '6768119b5157a6cf573ca551' ? 'Администратор' : 'Клиент'}
+                                        {user.role_id === '6768119b5157a6cf573ca551' ? 'Администратор' : user.role_id === '678d2743db8ce2c64437455e' ? 'Продавец-повар' : 'Клиент'}
                                     </td>
                                 </tr>
                             ))}

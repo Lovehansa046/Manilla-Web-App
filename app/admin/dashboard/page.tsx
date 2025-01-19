@@ -22,7 +22,7 @@ const Dashboard = () => {
             <main className="flex-grow container mx-auto px-4 py-8">
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
                     <button
-                        onClick={() => handleNavigation('/admin/create-user')}
+                        onClick={() => handleNavigation('/admin/create/user')}
                         className="p-6 bg-white rounded-lg shadow hover:shadow-lg hover:bg-gray-50 focus:ring-2 focus:ring-indigo-400"
                     >
                         <h2 className="text-lg font-bold text-gray-800">Создать пользователя</h2>
@@ -30,7 +30,15 @@ const Dashboard = () => {
                     </button>
 
                     <button
-                        onClick={() => handleNavigation('/admin/block-user')}
+                        onClick={() => handleNavigation('/admin/create/user/role')}
+                        className="p-6 bg-white rounded-lg shadow hover:shadow-lg hover:bg-gray-50 focus:ring-2 focus:ring-indigo-400"
+                    >
+                        <h2 className="text-lg font-bold text-gray-800">Создать роль пользователя</h2>
+                        <p className="text-sm text-gray-500 mt-2">Управление ролями учетных записей.</p>
+                    </button>
+
+                    <button
+                        onClick={() => handleNavigation('/admin/block/user')}
                         className="p-6 bg-white rounded-lg shadow hover:shadow-lg hover:bg-gray-50 focus:ring-2 focus:ring-indigo-400"
                     >
                         <h2 className="text-lg font-bold text-gray-800">Заблокировать пользователя</h2>
