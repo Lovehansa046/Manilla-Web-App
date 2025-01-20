@@ -2,6 +2,7 @@
 
 import React from 'react';
 import {useRouter} from 'next/navigation';
+import Logout from "@/app/admin/dashboard/logout";
 
 const Dashboard = () => {
     const router = useRouter();
@@ -12,12 +13,15 @@ const Dashboard = () => {
 
 
     return (
+        <>
+            <Logout></Logout>
         <div className="min-h-screen bg-gray-100 flex flex-col">
-            <header className="bg-indigo-600 text-white py-4 shadow-lg">
-                <div className="container mx-auto px-4">
-                    <h1 className="text-2xl font-bold">Панель управления</h1>
-                </div>
-            </header>
+            {/*<header className="bg-indigo-600 text-white py-4 shadow-lg">*/}
+            {/*    <div className="container mx-auto px-4">*/}
+            {/*        <h1 className="text-2xl font-bold">Панель управления</h1>*/}
+            {/*    </div>*/}
+
+            {/*</header>*/}
 
             <main className="flex-grow container mx-auto px-4 py-8">
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -93,6 +97,7 @@ const Dashboard = () => {
                 </div>
             </footer>
         </div>
+        </>
     );
 };
 

@@ -8,6 +8,12 @@ interface Product {
     // Дополнительные свойства, если они есть
 }
 
+interface User {
+    first_name: string;
+    last_name: string;
+    email: string
+}
+
 export async function GET(req: NextRequest) {
     try {
         const {db, client} = await getConnection();
@@ -16,9 +22,14 @@ export async function GET(req: NextRequest) {
         const ordersCollection = db.collection("orders");
         const orders = await ordersCollection.find().toArray();
 
+
         // Получаем детали продуктов для каждого заказа
         const ordersWithProductDetails = await Promise.all(
             orders.map(async (order) => {
+
+                const user = await db.collection("User").findOne({_id: new ObjectId(order.user_id)});
+
+
                 const productsWithDetails = await Promise.all(
                     order.products.map(async (product: Product) => {  // Явная типизация для product
                         const productDetails = await db
@@ -32,9 +43,22 @@ export async function GET(req: NextRequest) {
                     })
                 );
 
-                return {...order, products: productsWithDetails}; // Возвращаем заказ с добавленными данными продуктов
+                return {
+                    ...order,
+                    user: user ?
+                        {first_name: user.FirstName, last_name: user.LastName, email: user.Email}
+                        : {
+                            first_name: 'Неизвестно',
+                            last_name: 'Неизвестно',
+                            email: 'example@example.com'
+                        },
+
+                    products: productsWithDetails
+                }; // Возвращаем заказ с добавленными данными продуктов
+
             })
         );
+
 
         await client.close(); // Закрываем подключение к базе данных
 

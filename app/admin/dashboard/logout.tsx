@@ -3,7 +3,7 @@
 import React, {useState} from 'react';
 import Link from 'next/link';
 
-export default function Navbar() {
+export default function Logout() {
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
     async function logout() {
@@ -31,7 +31,7 @@ export default function Navbar() {
                     {/* Логотип */}
                     <div className="flex-shrink-0">
                         <Link href="/admin/dashboard" className="text-xl font-semibold text-white hover:opacity-80">
-                            Seller<span className="text-indigo-500">Panel</span>
+                            Dashboard<span className="text-indigo-500">Panel</span>
                         </Link>
                     </div>
 
