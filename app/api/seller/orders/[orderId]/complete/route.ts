@@ -1,10 +1,13 @@
 import {NextRequest, NextResponse} from "next/server";
 import {getConnection} from "@/backend/dbConnection/dbConnection"; // Подключение к базе данных
-import {ObjectId} from 'mongodb'; // Импортируем ObjectId из MongoDB
+import {ObjectId} from "mongodb"; // Импортируем ObjectId из MongoDB
 
-export async function PATCH(req: NextRequest, {params}: { params: { orderId: string } }) {
+export async function PATCH(req: NextRequest) {
     try {
-        const {orderId} = params; // Получаем orderId из параметров URL
+        // Извлекаем orderId из URL (предполагается, что URL имеет формат /api/seller/orders/{orderId}/complete)
+        const url = new URL(req.url);
+        const pathSegments = url.pathname.split('/'); // Разбиваем путь на части
+        const orderId = pathSegments[pathSegments.length - 2]; // Извлекаем orderId как предпоследний сегмент
 
         if (!orderId) {
             return NextResponse.json(

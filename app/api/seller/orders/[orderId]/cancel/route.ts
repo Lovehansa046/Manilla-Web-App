@@ -1,14 +1,21 @@
-// app/api/seller/orders/[orderId]/cancel/route.ts
 import {NextRequest, NextResponse} from 'next/server';
 import {getConnection} from '@/backend/dbConnection/dbConnection'; // Подключение к базе данных
 import {ObjectId} from 'mongodb';
 
-export async function PATCH(request: NextRequest, {params}: { params: { orderId: string } }) {
+export async function PATCH(request: NextRequest) {
     try {
-        console.log("Received request to cancel order with ID:", params.orderId);
+        // Извлекаем orderId из URL (предполагается, что URL имеет формат /api/seller/orders/{orderId}/cancel)
+        const url = new URL(request.url);
+        const pathSegments = url.pathname.split('/'); // Разбиваем путь на части
+        const orderId = pathSegments[pathSegments.length - 2]; // Извлекаем orderId как предпоследний сегмент
 
-        // Асинхронно извлекаем orderId
-        const {orderId} = params;
+        console.log("Received request to cancel order with ID:", orderId);
+
+        // Проверка валидности orderId как ObjectId
+        if (!ObjectId.isValid(orderId)) {
+            console.log("Invalid orderId:", orderId);
+            return NextResponse.json({message: "Invalid orderId"}, {status: 400});
+        }
 
         const {db, client} = await getConnection();
         console.log("Connected to the database");
@@ -35,7 +42,7 @@ export async function PATCH(request: NextRequest, {params}: { params: { orderId:
             return NextResponse.json({message: "Failed to cancel order"}, {status: 500});
         }
 
-        await client.close();  // Закрываем соединение
+        await client.close(); // Закрываем соединение
         console.log("Connection closed");
 
         return NextResponse.json({message: "Order cancelled successfully"});
