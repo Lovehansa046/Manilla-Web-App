@@ -37,14 +37,14 @@ export default function Navbar() {
 
                     {/* Основное меню */}
                     <div className="hidden md:flex space-x-6 items-center">
-                        {/*<Link href="/admin/dashboard"*/}
-                        {/*      className="text-white text-lg hover:text-gray-400 transition duration-300">*/}
-                        {/*    Dashboard*/}
-                        {/*</Link>*/}
-                        {/*<Link href="/admin/settings"*/}
-                        {/*      className="text-white text-lg hover:text-gray-400 transition duration-300">*/}
-                        {/*    Настройки*/}
-                        {/*</Link>*/}
+                        <Link href="/"
+                              className="text-white text-lg hover:text-gray-400 transition duration-300">
+                            Dashboard
+                        </Link>
+                        <Link href="/seller/orders/history"
+                              className="text-white text-lg hover:text-gray-400 transition duration-300">
+                            История заказов
+                        </Link>
                         <button
                             onClick={logout}
                             className="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-md transition duration-300"

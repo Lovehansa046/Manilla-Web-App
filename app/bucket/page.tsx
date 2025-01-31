@@ -171,6 +171,7 @@ const Cart = () => {
             user_id: setUser,
             predicted_date: selectedDateTime.date,
             predicted_time: selectedDateTime.time,
+            price_bucket: totalPrice,
             products: cart.map(item => ({
                 product_id: item._id,
                 quantity: item.quantity,
