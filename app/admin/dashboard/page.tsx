@@ -1,11 +1,13 @@
 'use client'
 
-import React from 'react';
+import React, {useState} from 'react';
 import {useRouter} from 'next/navigation';
 import Logout from "@/app/admin/dashboard/logout";
 
 const Dashboard = () => {
     const router = useRouter();
+
+    const [isDisabled,] = useState(true); // Установите в true для неактивной кнопки
 
     const handleNavigation = (path: string) => {
         router.push(path); // Переход на указанный путь
@@ -42,7 +44,7 @@ const Dashboard = () => {
                     </button>
 
                     <button
-                        onClick={() => handleNavigation('/admin/block/user')}
+                        onClick={() => handleNavigation('/admin/users/status')}
                         className="p-6 bg-white rounded-lg shadow hover:shadow-lg hover:bg-gray-50 focus:ring-2 focus:ring-indigo-400"
                     >
                         <h2 className="text-lg font-bold text-gray-800">Заблокировать пользователя</h2>
@@ -73,9 +75,11 @@ const Dashboard = () => {
                         <p className="text-sm text-gray-500 mt-2">Добавление нового продукта в каталог.</p>
                     </button>
 
+
                     <button
                         onClick={() => handleNavigation('/admin/analysis')}
-                        className="p-6 bg-white rounded-lg shadow hover:shadow-lg hover:bg-gray-50 focus:ring-2 focus:ring-indigo-400"
+                        className={`p-6 bg-white rounded-lg shadow hover:shadow-lg hover:bg-gray-50 focus:ring-2 focus:ring-indigo-400 ${isDisabled ? 'opacity-50 cursor-not-allowed' : ''}`}
+                        disabled={isDisabled}
                     >
                         <h2 className="text-lg font-bold text-gray-800">Просмотреть отчеты</h2>
                         <p className="text-sm text-gray-500 mt-2">Анализ данных и управление статистикой.</p>
@@ -83,11 +87,13 @@ const Dashboard = () => {
 
                     <button
                         onClick={() => handleNavigation('/admin/settings')}
-                        className="p-6 bg-white rounded-lg shadow hover:shadow-lg hover:bg-gray-50 focus:ring-2 focus:ring-indigo-400"
+                        className={`p-6 bg-white rounded-lg shadow hover:shadow-lg hover:bg-gray-50 focus:ring-2 focus:ring-indigo-400 ${isDisabled ? 'opacity-50 cursor-not-allowed' : ''}`}
+                        disabled={isDisabled}
                     >
                         <h2 className="text-lg font-bold text-gray-800">Настройки</h2>
                         <p className="text-sm text-gray-500 mt-2">Управление настройками приложения.</p>
                     </button>
+
                 </div>
             </main>
 
