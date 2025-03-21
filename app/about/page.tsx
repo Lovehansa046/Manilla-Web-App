@@ -17,7 +17,7 @@ export default function About() {
                 <section className="mb-12">
                     <h2 className="text-2xl sm:text-3xl font-semibold mb-4 text-center">Наша история</h2>
                     <p className="text-lg sm:text-xl text-gray-700 leading-relaxed">
-                        **Mannilla Cafe** было основано в 2015 году с мечтой создать место, где каждый мог бы
+                        Mannilla Cafe было основано в 2015 году с мечтой создать место, где каждый мог бы
                         насладиться уютной
                         атмосферой, вкусным кофе и уникальными блюдами. За эти годы мы стали не просто кафе, а настоящим
                         домом для наших гостей.

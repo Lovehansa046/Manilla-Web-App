@@ -134,11 +134,11 @@ export default function Login() {
                                 Sign in
                             </button>
 
-                            <div className="text-center">
-                                <a href="javascript:void(0)" className="hover:text-red-900">
-                                    Forgot password?
-                                </a>
-                            </div>
+                            {/*<div className="text-center">*/}
+                            {/*    <a href="javascript:void(0)" className="hover:text-red-900">*/}
+                            {/*        Forgot password?*/}
+                            {/*    </a>*/}
+                            {/*</div>*/}
                         </form>
                     </div>
                 </main>

@@ -106,7 +106,7 @@ const Home = ({products = []}: { products?: Product[] }) => {
                             width={200}
                             height={400}
                             alt={selectedProduct.name}
-                            className="w-full h-full object-fill rounded-lg mb-6"
+                            className="w-200 h-400 object-cover rounded-lg mb-6"
                         />
                         <h2 className="text-3xl font-semibold text-gray-900">{selectedProduct.name}</h2>
                         <p className="text-gray-700 text-lg mt-2 text-center">{selectedProduct.description}</p>

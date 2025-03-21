@@ -4,7 +4,7 @@
     "name": "Капучино",
     "description": "Ароматный кофе с молочной пенкой.",
     "price": 3.99,
-    "image": "https://via.placeholder.com/400",
+    "image": "https://picsum.photos/id/237/200/300",
     "quantity": 10
   },
   {
@@ -12,7 +12,7 @@
     "name": "Латте",
     "description": "Кофе с мягким молочным вкусом.",
     "price": 4.49,
-    "image": "https://via.placeholder.com/400",
+    "image": "https://picsum.photos/id/237/200/300",
     "quantity": 10
   },
   {
@@ -20,7 +20,7 @@
     "name": "Американо",
     "description": "Классический чёрный кофе.",
     "price": 2.99,
-    "image": "https://via.placeholder.com/400",
+    "image": "https://picsum.photos/id/237/200/300",
     "quantity": 10
   },
   {
@@ -28,7 +28,7 @@
     "name": "Эспрессо",
     "description": "Сильный и насыщенный кофе.",
     "price": 2.49,
-    "image": "https://via.placeholder.com/400",
+    "image": "https://picsum.photos/id/237/200/300",
     "quantity": 10
   },
   {
@@ -36,7 +36,7 @@
     "name": "Мохито",
     "description": "Освежающий напиток с мятой и лаймом.",
     "price": 5.99,
-    "image": "https://via.placeholder.com/400",
+    "image": "https://picsum.photos/id/237/200/300",
     "quantity": 10
   },
   {
@@ -44,7 +44,7 @@
     "name": "Смузи Манго",
     "description": "Фруктовый напиток с манго.",
     "price": 4.99,
-    "image": "https://via.placeholder.com/400",
+    "image": "https://picsum.photos/id/237/200/300",
     "quantity": 10
   },
   {
@@ -52,7 +52,7 @@
     "name": "Салат Цезарь",
     "description": "Классический салат с курицей.",
     "price": 7.99,
-    "image": "https://via.placeholder.com/400",
+    "image": "https://picsum.photos/id/237/200/300",
     "quantity": 10
   },
   {
@@ -60,7 +60,7 @@
     "name": "Бургер",
     "description": "Сочный бургер с говядиной.",
     "price": 8.49,
-    "image": "https://via.placeholder.com/400",
+    "image": "https://picsum.photos/id/237/200/300",
     "quantity": 10
   },
   {
@@ -68,7 +68,7 @@
     "name": "Пицца Пепперони",
     "description": "Острая пицца с пепперони.",
     "price": 9.99,
-    "image": "https://via.placeholder.com/400",
+    "image": "https://picsum.photos/id/237/200/300",
     "quantity": 10
   },
   {
@@ -76,7 +76,7 @@
     "name": "Круассан",
     "description": "Свежая французская выпечка.",
     "price": 2.49,
-    "image": "https://via.placeholder.com/400",
+    "image": "https://picsum.photos/id/237/200/300",
     "quantity": 10
   }
 ]

@@ -1,0 +1,136 @@
+[{
+  "_id": {
+    "$oid": "676fedd5b9d06b03ed1af1b7"
+  },
+  "FirstName": "Artjom",
+  "LastName": "Plotnikov",
+  "Email": "admin4@example.com",
+  "Password": "$2b$10$H7wm1lrsKLeO8o6OKhx7R.H2odB/B/158oXroM/tKkH7eyFcoBlVS",
+  "image": "http://dummyimage.com/150x150.jpg/99cccc",
+  "role_id": {
+    "$oid": "676823d21e6062779cfd474e"
+  },
+  "createdAt": {
+    "$date": "2024-12-28T12:23:49.506Z"
+  },
+  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NzZmZWRkNWI5ZDA2YjAzZWQxYWYxYjciLCJlbWFpbCI6ImFkbWluNEBleGFtcGxlLmNvbSIsInJvbGVfaWQiOiI2NzY4MjNkMjFlNjA2Mjc3OWNmZDQ3NGUiLCJpYXQiOjE3Mzg0OTI0NjEsImV4cCI6MTczODQ5NjA2MX0.9FJSUi_F4RCgt4lxo9jVUb2i_GRtLHpRr4_XLcPoc-w",
+  "tokenExpiresAt": {
+    "$date": "2025-02-02T11:34:21.923Z"
+  },
+  "user_id": {
+    "$oid": "676fedd5b9d06b03ed1af1b7"
+  },
+  "isBlocked": false
+},
+{
+  "_id": {
+    "$oid": "676feee1b9d06b03ed1af1b8"
+  },
+  "FirstName": "Andrei",
+  "LastName": "Plotnikov",
+  "Email": "admin@admin.com",
+  "Password": "$2b$10$j0BDpDhubTjU/VeGKTqiw.7qv0Btsrck1UyusmUcnW4AgWoBvldJO",
+  "image": "http://dummyimage.com/150x150.jpg/99cccc",
+  "role_id": {
+    "$oid": "6768119b5157a6cf573ca551"
+  },
+  "createdAt": {
+    "$date": "2024-12-28T12:28:17.892Z"
+  },
+  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NzZmZWVlMWI5ZDA2YjAzZWQxYWYxYjgiLCJlbWFpbCI6ImFkbWluQGFkbWluLmNvbSIsInJvbGVfaWQiOiI2NzY4MTE5YjUxNTdhNmNmNTczY2E1NTEiLCJpYXQiOjE3MzgzMzk4MTYsImV4cCI6MTczODM0MzQxNn0.mKR3dwC5vvacqyHpHbYvcZ37lEyoLnheY-Rtt-jnfGk",
+  "tokenExpiresAt": {
+    "$date": "2025-01-31T17:10:16.515Z"
+  },
+  "user_id_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NzZmZWVlMWI5ZDA2YjAzZWQxYWYxYjgiLCJpYXQiOjE3MzU0MTAwMzYsImV4cCI6MTczNTQxMzYzNn0.R6OyTW3nkgB-g6UCGw0Jac59uXQx_waRSLRN63PJM9k",
+  "user_id": {
+    "$oid": "676feee1b9d06b03ed1af1b8"
+  }
+},
+{
+  "_id": {
+    "$oid": "677027a36ae7d2b79fc8f3ad"
+  },
+  "FirstName": "Andrei",
+  "LastName": "Plotnikov",
+  "Email": "example@example.com",
+  "Password": "$2b$10$JSlOWot.f7WHy4JEWm1.jegwybEykmj5svHXhyks9aE4JsLTbLTBi",
+  "image": "http://dummyimage.com/150x150.jpg/99cccc",
+  "role_id": {
+    "$oid": "6768119b5157a6cf573ca551"
+  },
+  "createdAt": {
+    "$date": "2024-12-28T16:30:27.198Z"
+  },
+  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NzcwMjdhMzZhZTdkMmI3OWZjOGYzYWQiLCJlbWFpbCI6ImV4YW1wbGVAZXhhbXBsZS5jb20iLCJyb2xlX2lkIjoiNjc2ODExOWI1MTU3YTZjZjU3M2NhNTUxIiwiaWF0IjoxNzM4MzQyMTMyLCJleHAiOjE3MzgzNDU3MzJ9.611Gq6H3_tdLZVfEyXR1GDcwkakwULnxjsDoDeVYm6Y",
+  "tokenExpiresAt": {
+    "$date": "2025-01-31T17:48:52.876Z"
+  },
+  "user_id": {
+    "$oid": "677027a36ae7d2b79fc8f3ad"
+  },
+  "isBlocked": false
+},
+{
+  "_id": {
+    "$oid": "677027d26ae7d2b79fc8f3ae"
+  },
+  "FirstName": "fre",
+  "LastName": "ewrwe",
+  "Email": "example2@example.com",
+  "Password": "$2b$10$NPbZzWr0rlBBrudyutiue.jbmZrJWPz9wic5sIxatoY8c4/VHRp5C",
+  "image": "http://dummyimage.com/150x150.jpg/99cccc",
+  "role_id": {
+    "$oid": "676823d21e6062779cfd474e"
+  },
+  "createdAt": {
+    "$date": "2024-12-28T16:31:14.391Z"
+  },
+  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NzcwMjdkMjZhZTdkMmI3OWZjOGYzYWUiLCJlbWFpbCI6ImV4YW1wbGUyQGV4YW1wbGUuY29tIiwicm9sZV9pZCI6IjY3NjgyM2QyMWU2MDYyNzc5Y2ZkNDc0ZSIsImlhdCI6MTczNTQxMzc1OSwiZXhwIjoxNzM1NDE3MzU5fQ.No2HKEMtpGhRzTgL14l3U9dX4kCtMSIfTXfp3J73THs",
+  "tokenExpiresAt": {
+    "$date": "2024-12-28T20:22:39.764Z"
+  },
+  "user_id_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NzcwMjdkMjZhZTdkMmI3OWZjOGYzYWUiLCJpYXQiOjE3MzU0MTA0MjYsImV4cCI6MTczNTQxNDAyNn0.AP7ybCAoi1Ih99NQ0TVjlArpmt8Q1R29WjxcTjH6wKY",
+  "user_id": {
+    "$oid": "677027d26ae7d2b79fc8f3ae"
+  },
+  "isBlocked": false
+},
+{
+  "_id": {
+    "$oid": "678d2959db8ce2c644374561"
+  },
+  "FirstName": "Artjom",
+  "LastName": "Plotnikov",
+  "Email": "testuser@example.com",
+  "Password": "$2b$10$EeezcBrfjhrc4dImfdNb2OsOqIjk6gC17xHBJ/XgkvoGD9VfzrfHO",
+  "image": "http://dummyimage.com/150x150.jpg/99cccc",
+  "role_id": {
+    "$oid": "676823d21e6062779cfd474e"
+  },
+  "createdAt": {
+    "$date": "2025-01-19T16:33:29.078Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "678d2bd0db8ce2c644374562"
+  },
+  "FirstName": "seller",
+  "LastName": "seller",
+  "Email": "seller@example.com",
+  "Password": "$2b$10$XwaNYdyQH9kv2SNJYC5jEuBrORSsu7wYTdHfZLwQwKD4m3rtAyBjS",
+  "image": "http://dummyimage.com/150x150.jpg/99cccc",
+  "role_id": {
+    "$oid": "678d2743db8ce2c64437455e"
+  },
+  "createdAt": {
+    "$date": "2025-01-19T16:44:00.847Z"
+  },
+  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NzhkMmJkMGRiOGNlMmM2NDQzNzQ1NjIiLCJlbWFpbCI6InNlbGxlckBleGFtcGxlLmNvbSIsInJvbGVfaWQiOiI2NzhkMjc0M2RiOGNlMmM2NDQzNzQ1NWUiLCJpYXQiOjE3Mzg0OTM4NjcsImV4cCI6MTczODQ5NzQ2N30.nzv6aAu-VK62BEKPJsAwkuqFGQSgNON4hIXXfngkuVo",
+  "tokenExpiresAt": {
+    "$date": "2025-02-02T11:57:47.668Z"
+  },
+  "user_id": {
+    "$oid": "678d2bd0db8ce2c644374562"
+  }
+}]

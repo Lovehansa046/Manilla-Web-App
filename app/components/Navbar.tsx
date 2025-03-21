@@ -1,5 +1,5 @@
 import React, {useEffect, useRef, useState} from 'react'
-import data from '@/app/components/DATA/data_2.json';
+import data from '@/app/components/DATA/sampleProducts.json';
 import contracts from '@/app/components/DATA/data.json';
 import payments from '@/app/components/DATA/data_3.json';
 import Image from "next/image";
@@ -27,12 +27,13 @@ interface ProfileDropDownProps {
 interface Product {
     type: 'product';
     name: string;
-    sku: string;
     price: number;
-    count: number;
-    sellerName: string;
-    totalPrice: number;
+    // count: number;
+    // sellerName: string;
+    // totalPrice: number;
     quantity: number;
+    "description": string,
+    "image": string,
 }
 
 interface Contract {
@@ -361,18 +362,21 @@ export default function Navbar() {
 
     const combinedData: CombinedData[] = [
         ...data.map(item => ({type: 'product' as const, ...item})),
-        ...contracts.map(item => ({type: 'contract' as const, ...item})),
-        ...payments.map(item => ({type: 'payment' as const, ...item})),
+        // ...contracts.map(item => ({type: 'contract' as const, ...item})),
+        // ...payments.map(item => ({type: 'payment' as const, ...item})),
     ];
+
+
+
 
 
     const filteredResults = combinedData.filter(item => {
         const term = searchTerm.toLowerCase();
         if (item.type === 'product') {
             return (
-                item.name.toLowerCase().includes(term) ||
-                item.sku.toLowerCase().includes(term) ||
-                item.sellerName.toLowerCase().includes(term)
+                item.name.toLowerCase().includes(term)
+                // item.sku.toLowerCase().includes(term) ||
+                // item.sellerName.toLowerCase().includes(term)
             );
         } else if (item.type === 'contract') {
             return (
@@ -618,8 +622,8 @@ export default function Navbar() {
                                                 {item.type === 'product' && (
                                                     <div>
                                                         <p><strong>Product:</strong> {item.name}</p>
-                                                        <p><strong>SKU:</strong> {item.sku}</p>
-                                                        <p><strong>Seller:</strong> {item.sellerName}</p>
+                                                        {/*<p><strong>SKU:</strong> {item.sku}</p>*/}
+                                                        {/*<p><strong>Seller:</strong> {item.sellerName}</p>*/}
                                                         <p><strong>Price:</strong> ${item.price}</p>
                                                     </div>
                                                 )}

@@ -1,0 +1,486 @@
+[{
+  "_id": {
+    "$oid": "67701561fc92ca5b94ffd780"
+  },
+  "user_id": {
+    "$oid": "676fedd5b9d06b03ed1af1b7"
+  },
+  "predicted_date": "2222-12-21",
+  "predicted_time": "12:12",
+  "products": [
+    {
+      "product_id": "676ff109b9d06b03ed1af1bc",
+      "quantity": 1
+    },
+    {
+      "product_id": "676fef57b9d06b03ed1af1b9",
+      "quantity": 1
+    }
+  ],
+  "status": "pending",
+  "created_at": {
+    "$date": "2024-12-28T15:12:33.346Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "67701bddfc92ca5b94ffd781"
+  },
+  "user_id": {
+    "$oid": "676fedd5b9d06b03ed1af1b7"
+  },
+  "predicted_date": "2024-12-28",
+  "predicted_time": "18:30",
+  "products": [
+    {
+      "product_id": "676ff109b9d06b03ed1af1bc",
+      "quantity": 2
+    }
+  ],
+  "status": "pending",
+  "created_at": {
+    "$date": "2024-12-28T15:40:13.308Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "67701c11fc92ca5b94ffd782"
+  },
+  "user_id": {
+    "$oid": "676fedd5b9d06b03ed1af1b7"
+  },
+  "predicted_date": "2024-12-28",
+  "predicted_time": "18:40",
+  "products": [
+    {
+      "product_id": "676ff109b9d06b03ed1af1bc",
+      "quantity": 2
+    }
+  ],
+  "status": "pending",
+  "created_at": {
+    "$date": "2024-12-28T15:41:05.835Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "67701f72fc92ca5b94ffd783"
+  },
+  "user_id": {
+    "$oid": "676fedd5b9d06b03ed1af1b7"
+  },
+  "predicted_date": "2024-12-28",
+  "predicted_time": "18:36",
+  "products": [
+    {
+      "product_id": "676ff109b9d06b03ed1af1bc",
+      "quantity": 1
+    }
+  ],
+  "status": "pending",
+  "created_at": {
+    "$date": "2024-12-28T15:55:30.986Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "67702142fc92ca5b94ffd784"
+  },
+  "user_id": {
+    "$oid": "676fedd5b9d06b03ed1af1b7"
+  },
+  "predicted_date": "2024-12-30",
+  "predicted_time": "10:30",
+  "products": [
+    {
+      "product_id": "676ff109b9d06b03ed1af1bc",
+      "quantity": 1
+    }
+  ],
+  "status": "pending",
+  "created_at": {
+    "$date": "2024-12-28T16:03:14.136Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "6770216ffc92ca5b94ffd785"
+  },
+  "user_id": {
+    "$oid": "676fedd5b9d06b03ed1af1b7"
+  },
+  "predicted_date": "2024-12-30",
+  "predicted_time": "22:22",
+  "products": [
+    {
+      "product_id": "676ff109b9d06b03ed1af1bc",
+      "quantity": 1
+    }
+  ],
+  "status": "pending",
+  "created_at": {
+    "$date": "2024-12-28T16:03:59.745Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "67703af0f90d61280ac74e60"
+  },
+  "user_id": {
+    "$oid": "677027d26ae7d2b79fc8f3ae"
+  },
+  "predicted_date": "2024-12-31",
+  "predicted_time": "14:02",
+  "products": [
+    {
+      "product_id": "676ff109b9d06b03ed1af1bc",
+      "quantity": 1
+    }
+  ],
+  "status": "pending",
+  "created_at": {
+    "$date": "2024-12-28T17:52:48.382Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "677044d5f90d61280ac74e61"
+  },
+  "user_id": {
+    "$oid": "677027d26ae7d2b79fc8f3ae"
+  },
+  "predicted_date": "2025-01-01",
+  "predicted_time": "12:22",
+  "products": [
+    {
+      "product_id": "676fef57b9d06b03ed1af1b9",
+      "quantity": 6
+    },
+    {
+      "product_id": "676ff109b9d06b03ed1af1bc",
+      "quantity": 1
+    }
+  ],
+  "status": "pending",
+  "created_at": {
+    "$date": "2024-12-28T18:35:01.277Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "67704b5df90d61280ac74e62"
+  },
+  "user_id": {
+    "$oid": "677027d26ae7d2b79fc8f3ae"
+  },
+  "predicted_date": "2024-12-31",
+  "predicted_time": "12:22",
+  "products": [
+    {
+      "product_id": "676ff109b9d06b03ed1af1bc",
+      "quantity": 1
+    }
+  ],
+  "status": "pending",
+  "created_at": {
+    "$date": "2024-12-28T19:02:53.561Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "6770501799f0ee53a030261c"
+  },
+  "user_id": {
+    "$oid": "677027d26ae7d2b79fc8f3ae"
+  },
+  "predicted_date": "2024-12-30",
+  "predicted_time": "14:44",
+  "products": [
+    {
+      "product_id": "676ff109b9d06b03ed1af1bc",
+      "quantity": 1
+    }
+  ],
+  "status": "pending",
+  "created_at": {
+    "$date": "2024-12-28T19:23:03.867Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "6770509a99f0ee53a030261d"
+  },
+  "user_id": {
+    "$oid": "677027d26ae7d2b79fc8f3ae"
+  },
+  "predicted_date": "2024-12-31",
+  "predicted_time": "14:22",
+  "products": [
+    {
+      "product_id": "676ff109b9d06b03ed1af1bc",
+      "quantity": 1
+    }
+  ],
+  "status": "pending",
+  "created_at": {
+    "$date": "2024-12-28T19:25:14.280Z"
+  },
+  "price_bucket": 2.99
+},
+{
+  "_id": {
+    "$oid": "6770516fcd66e27c30838ae7"
+  },
+  "user_id": {
+    "$oid": "677027d26ae7d2b79fc8f3ae"
+  },
+  "predicted_date": "2024-12-30",
+  "predicted_time": "12:22",
+  "products": [
+    {
+      "product_id": "676ff109b9d06b03ed1af1bc",
+      "quantity": 1
+    }
+  ],
+  "status": "pending",
+  "created_at": {
+    "$date": "2024-12-28T19:28:47.451Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "6770519dcd66e27c30838ae8"
+  },
+  "user_id": {
+    "$oid": "676fedd5b9d06b03ed1af1b7"
+  },
+  "predicted_date": "2024-12-30",
+  "predicted_time": "12:22",
+  "products": [
+    {
+      "product_id": "676fef57b9d06b03ed1af1b9",
+      "quantity": 3
+    },
+    {
+      "product_id": "676ff109b9d06b03ed1af1bc",
+      "quantity": 3
+    }
+  ],
+  "status": "pending",
+  "created_at": {
+    "$date": "2024-12-28T19:29:33.172Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "677131e500ea475c60f00453"
+  },
+  "user_id": {
+    "$oid": "676fedd5b9d06b03ed1af1b7"
+  },
+  "predicted_date": "2024-12-30",
+  "predicted_time": "12:22",
+  "products": [
+    {
+      "product_id": "676ff109b9d06b03ed1af1bc",
+      "quantity": 1
+    }
+  ],
+  "status": "pending",
+  "created_at": {
+    "$date": "2024-12-29T11:26:29.549Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "6771321d00ea475c60f00454"
+  },
+  "user_id": {
+    "$oid": "676fedd5b9d06b03ed1af1b7"
+  },
+  "predicted_date": "2024-12-30",
+  "predicted_time": "12:32",
+  "products": [
+    {
+      "product_id": "676fef57b9d06b03ed1af1b9",
+      "quantity": 2
+    }
+  ],
+  "status": "pending",
+  "created_at": {
+    "$date": "2024-12-29T11:27:25.271Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "677458008a43c194bb47b0dd"
+  },
+  "user_id": {
+    "$oid": "676fedd5b9d06b03ed1af1b7"
+  },
+  "predicted_date": "2025-01-01",
+  "predicted_time": "23:14",
+  "products": [
+    {
+      "product_id": "67744d364f6fcf48f65dae8b",
+      "quantity": 1
+    }
+  ],
+  "status": "pending",
+  "created_at": {
+    "$date": "2024-12-31T20:45:52.940Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "678b946ce9548a4ae4bc6f3d"
+  },
+  "user_id": {
+    "$oid": "676fedd5b9d06b03ed1af1b7"
+  },
+  "predicted_date": "2025-01-19",
+  "predicted_time": "15:12",
+  "products": [
+    {
+      "product_id": "67744d5f4f6fcf48f65dae8c",
+      "quantity": 1
+    }
+  ],
+  "status": "pending",
+  "created_at": {
+    "$date": "2025-01-18T11:45:48.824Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "678d384ccf1d4e9b6148b0dd"
+  },
+  "user_id": {
+    "$oid": "676fedd5b9d06b03ed1af1b7"
+  },
+  "predicted_date": "2025-01-20",
+  "predicted_time": "12:00",
+  "products": [
+    {
+      "product_id": "67744d5f4f6fcf48f65dae8c",
+      "quantity": 1
+    }
+  ],
+  "status": "completed",
+  "created_at": {
+    "$date": "2025-01-19T17:37:16.454Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "679ced352924c0ea5f7f3492"
+  },
+  "user_id": {
+    "$oid": "676fedd5b9d06b03ed1af1b7"
+  },
+  "predicted_date": "2025-02-01",
+  "predicted_time": "12:22",
+  "price_bucket": 2.99,
+  "products": [
+    {
+      "product_id": {
+        "$oid": "67744d5f4f6fcf48f65dae8c"
+      },
+      "quantity": 1
+    }
+  ],
+  "status": "cancelled",
+  "created_at": {
+    "$date": "2025-01-31T15:33:09.042Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "679cedea2924c0ea5f7f3493"
+  },
+  "user_id": {
+    "$oid": "676fedd5b9d06b03ed1af1b7"
+  },
+  "predicted_date": "2025-02-01",
+  "predicted_time": "21:22",
+  "price_bucket": 2.99,
+  "products": [
+    {
+      "product_id": "67744d5f4f6fcf48f65dae8c",
+      "quantity": 1
+    }
+  ],
+  "status": "cancelled",
+  "created_at": {
+    "$date": "2025-01-31T15:36:10.929Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "679ceeb82924c0ea5f7f3494"
+  },
+  "user_id": {
+    "$oid": "676fedd5b9d06b03ed1af1b7"
+  },
+  "predicted_date": "2025-02-12",
+  "predicted_time": "21:12",
+  "price_bucket": 2.99,
+  "products": [
+    {
+      "product_id": {
+        "$oid": "67744d5f4f6fcf48f65dae8c"
+      },
+      "quantity": 1
+    }
+  ],
+  "status": "pending",
+  "created_at": {
+    "$date": "2025-01-31T15:39:36.565Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "679cff35ba2b22b5160d2806"
+  },
+  "user_id": {
+    "$oid": "676fedd5b9d06b03ed1af1b7"
+  },
+  "predicted_date": "2025-02-12",
+  "predicted_time": "12:22",
+  "price_bucket": 2.99,
+  "products": [
+    {
+      "product_id": {
+        "$oid": "67744d5f4f6fcf48f65dae8c"
+      },
+      "quantity": 1
+    }
+  ],
+  "status": "pending",
+  "created_at": {
+    "$date": "2025-01-31T16:49:57.767Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "679f4f726d3627e423827545"
+  },
+  "user_id": {
+    "$oid": "676fedd5b9d06b03ed1af1b7"
+  },
+  "predicted_date": "2025-02-03",
+  "predicted_time": "15:40",
+  "price_bucket": 779.4,
+  "products": [
+    {
+      "product_id": {
+        "$oid": "67744d364f6fcf48f65dae8b"
+      },
+      "quantity": 60
+    }
+  ],
+  "status": "completed",
+  "created_at": {
+    "$date": "2025-02-02T10:56:50.490Z"
+  }
+}]

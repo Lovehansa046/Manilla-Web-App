@@ -1,0 +1,40 @@
+[{
+  "_id": {
+    "$oid": "6768119b5157a6cf573ca551"
+  },
+  "createdAt": {
+    "$date": "2024-12-22T13:18:19.271Z"
+  },
+  "roleDescription": "This is admin role",
+  "roleName": "admin"
+},
+{
+  "_id": {
+    "$oid": "676823d21e6062779cfd474e"
+  },
+  "roleName": "user",
+  "roleDescription": "user",
+  "createdAt": {
+    "$date": "2024-12-22T14:36:02.653Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "676823ef1e6062779cfd474f"
+  },
+  "roleName": "admin_professional",
+  "roleDescription": "admin_professional",
+  "createdAt": {
+    "$date": "2024-12-22T14:36:31.211Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "678d2743db8ce2c64437455e"
+  },
+  "roleName": "seller",
+  "roleDescription": "this is role saler",
+  "createdAt": {
+    "$date": "2025-01-19T16:24:35.783Z"
+  }
+}]
