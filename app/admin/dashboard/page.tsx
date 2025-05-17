@@ -75,6 +75,14 @@ const Dashboard = () => {
                         <p className="text-sm text-gray-500 mt-2">Добавление нового продукта в каталог.</p>
                     </button>
 
+                    <button
+                        onClick={() => handleNavigation('/admin/product/catalog')}
+                        className="p-6 bg-white rounded-lg shadow hover:shadow-lg hover:bg-gray-50 focus:ring-2 focus:ring-indigo-400"
+                    >
+                        <h2 className="text-lg font-bold text-gray-800">Просмотр всех продуктов</h2>
+                        <p className="text-sm text-gray-500 mt-2">Каталог продуктов</p>
+                    </button>
+
 
                     <button
                         onClick={() => handleNavigation('/admin/analysis')}

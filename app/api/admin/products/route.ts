@@ -166,6 +166,32 @@ export async function POST(req: Request) {
  *       500:
  *         description: Ошибка при получении данных
  */
+
+export async function deleteProduct(req: Request) {
+    const url = new URL(req.url);
+    const productId = url.searchParams.get("product_id");
+
+    if (!productId) {
+        return NextResponse.json({error: "product_id is required"}, {status: 400});
+    }
+
+    try {
+        const {db} = await getConnection();
+
+        const result = await db.collection("Product").deleteOne({_id: new ObjectId(productId)});
+
+        if (result.deletedCount === 0) {
+            return NextResponse.json({error: "Product not found"}, {status: 404});
+        }
+
+        return NextResponse.json({message: "Product deleted successfully"}, {status: 200});
+    } catch (error) {
+        console.error("Ошибка при получении продуктов:", error);
+        return NextResponse.json({error: "Failed to delete product"}, {status: 500});
+    }
+}
+
+
 async function getProducts(req: Request) {
     const url = new URL(req.url);
     const product_type_id = url.searchParams.get("product_type_id");
@@ -211,4 +237,8 @@ async function getProducts(req: Request) {
 
 export async function GET(req: Request) {
     return getProducts(req);
+}
+
+export async function DELETE(req: Request) {
+    return deleteProduct(req);
 }
