@@ -1,52 +1,93 @@
 "use client";
 
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import {useRouter} from 'next/navigation';
 
 const AccountPage = () => {
-    const [userData] = useState({
-        name: "Иван",
-        surname: "Иванов",
-        email: "ivan@example.com",
-        subscriptionStatus: "Активна", // Статус подписки
-        cardNumber: "**** **** **** 1234", // Номер карты скрыт
+    const [userData, setUserData] = useState({
+        FirstName: "",
+        LastName: "",
+        Email: "",
+        subscriptionStatus: "",
+        cardNumber: "",
     });
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState<string | null>(null);
 
-    const router = useRouter(); // Хук для навигации
+    const router = useRouter();
+
+    useEffect(() => {
+        const token = localStorage.getItem("user_id_token");
+        if (!token) {
+            setError("Токен пользователя не найден");
+            setLoading(false);
+            return;
+        }
+
+        const sanitizedToken = token.replace(/['"]+/g, '');
+
+        const fetchUserData = async () => {
+            try {
+                const response = await fetch(`/api/auth/${sanitizedToken}`);
+                const data = await response.json();
+
+                if (response.ok) {
+                    setUserData({
+                        FirstName: data.FirstName || "",
+                        LastName: data.LastName || "",
+                        Email: data.Email || "",
+                        subscriptionStatus: data.subscriptionStatus || "Неизвестна",
+                        cardNumber: data.cardNumber || "**** **** **** 0000",
+                    });
+                } else {
+                    setError(data.message || "Ошибка при получении данных пользователя");
+                }
+            } catch (err) {
+                setError("Ошибка сети");
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        fetchUserData();
+    }, []);
 
     const handleGoToAccountSettings = () => {
-        router.push("/account/settings"); // Переход к настройкам аккаунта
+        router.push("/account/settings");
     };
 
     const handleGoHome = () => {
-        router.push("/home"); // Переход на главную страницу
+        router.push("/home");
     };
+
+    if (loading) return <div>Загрузка...</div>;
+    if (error) return <div className="text-red-600 text-center">{error}</div>;
 
     return (
         <div className="max-w-3xl mx-auto p-6 shadow-lg border rounded-lg bg-white">
             <h2 className="text-2xl font-bold mb-4 text-center">Данные аккаунта</h2>
 
-            {/* Информация о пользователе */}
             <div className="mb-8">
                 <h3 className="text-xl font-semibold text-gray-700">Личные данные</h3>
                 <div className="mt-4">
-                    <p className="text-sm text-gray-600"><strong>Имя:</strong> {userData.name}</p>
-                    <p className="text-sm text-gray-600"><strong>Фамилия:</strong> {userData.surname}</p>
-                    <p className="text-sm text-gray-600"><strong>Email:</strong> {userData.email}</p>
+                    <p className="text-sm text-gray-600"><strong>Имя:</strong> {userData.FirstName}</p>
+                    <p className="text-sm text-gray-600"><strong>Фамилия:</strong> {userData.LastName}</p>
+                    <p className="text-sm text-gray-600"><strong>Email:</strong> {userData.Email}</p>
                 </div>
             </div>
 
-            {/* Платежные данные */}
             <div className="mb-8">
                 <h3 className="text-xl font-semibold text-gray-700">Платежные данные</h3>
                 <div className="mt-4">
-                    <p className="text-sm text-gray-600"><strong>Статус подписки:</strong> {userData.subscriptionStatus}
+                    <p className="text-sm text-gray-600">
+                        <strong>Статус подписки:</strong> {userData.subscriptionStatus}
                     </p>
-                    <p className="text-sm text-gray-600"><strong>Номер карты:</strong> {userData.cardNumber}</p>
+                    <p className="text-sm text-gray-600">
+                        <strong>Номер карты:</strong> {userData.cardNumber}
+                    </p>
                 </div>
             </div>
 
-            {/* Кнопки перехода */}
             <div className="flex justify-between gap-4 mt-8">
                 <button
                     onClick={handleGoHome}

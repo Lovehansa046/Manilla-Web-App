@@ -167,7 +167,7 @@ export async function POST(req: Request) {
  *         description: Ошибка при получении данных
  */
 
-export async function deleteProduct(req: Request) {
+export async function DELETE(req: Request) {
     const url = new URL(req.url);
     const productId = url.searchParams.get("product_id");
 
@@ -239,6 +239,4 @@ export async function GET(req: Request) {
     return getProducts(req);
 }
 
-export async function DELETE(req: Request) {
-    return deleteProduct(req);
-}
+

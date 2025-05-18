@@ -14,7 +14,7 @@ interface Product {
     image: string;
     productTypeId: string;
     quantity_available: number;
-    isAlcoholic: boolean;
+    is_alcoholic: boolean;
 }
 
 export default function NonAlcoholPage() {
@@ -62,7 +62,7 @@ export default function NonAlcoholPage() {
     };
 
     const handleUpdateProduct = async (updatedProduct: Product) => {
-        const response = await fetch(`/api/admin/products/${updatedProduct._id}`, {
+        const response = await fetch(`/api/admin/products/update?product_id=${updatedProduct._id}`, {
             method: "PUT",
             headers: {
                 "Content-Type": "application/json",
@@ -78,6 +78,7 @@ export default function NonAlcoholPage() {
         }
     };
 
+
     const confirmDelete = (id: string) => {
         setSelectedProductId(id);
         setConfirmModalOpen(true); // Открываем ConfirmModal для подтверждения удаления
@@ -89,7 +90,7 @@ export default function NonAlcoholPage() {
         const confirmed = confirm("Вы уверены, что хотите удалить этот продукт?");
         if (!confirmed) return;
 
-        const response = await fetch(`/api/admin/products/${selectedProductId}`, {
+        const response = await fetch(`/api/admin/products/delete?product_id=${selectedProductId}`, {
             method: "DELETE",
         });
 
